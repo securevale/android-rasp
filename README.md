@@ -4,6 +4,7 @@
 [![Kotlin](https://img.shields.io/badge/kotlin-1.7.20-blue)](https://kotlinlang.org/docs/whatsnew1720.html)
 [![Android](https://img.shields.io/badge/androidSDK-31-brightgreen)](https://developer.android.com/about/versions/12)
 [![Gradle](https://img.shields.io/badge/gradle-7.4-green)](https://docs.gradle.org/7.4/release-notes.html)
+[![Maven](https://maven-badges.herokuapp.com/maven-central/com.securevale/rasp-android/badge.svg)](https://search.maven.org/artifact/com.securevale/rasp-android)
 
 An open-source RASP (Runtime Application Self-Protection) solution for protecting Android apps
 against being run on vulnerable devices.
