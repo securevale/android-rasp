@@ -1,0 +1,18 @@
+[package]
+name = "native"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+log = "0.4.17"
+jni = "0.21.1"
+android_logger = "0.13.1"
+once_cell = "1.18.0"
+
+[lib]
+name = "native"
+crate-type = ["cdylib"]
+
+#[profile.release-with-debug]
+#inherits = "release"
+#debug = true

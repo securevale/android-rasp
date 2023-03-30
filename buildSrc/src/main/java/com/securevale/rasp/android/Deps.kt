@@ -1,12 +1,12 @@
 package com.securevale.rasp.android
 
 object Deps {
-    const val versionCode = 1
-    const val versionName = "0.0.1"
+    const val versionCode = 2
+    const val versionName = "0.2.0"
 
     const val minSDKVersion = 23
-    const val targetSDKVersion = 31
-    const val compileSDKVersion = 31
+    const val targetSDKVersion = 33
+    const val compileSDKVersion = 33
 
     const val kotlinVersion = "1.6.10"
 
@@ -29,15 +29,5 @@ object Deps {
         private const val leakCanaryVersion = "2.9.1"
 
         const val leakCanary = "com.squareup.leakcanary:leakcanary-android:$leakCanaryVersion"
-    }
-
-    object Test {
-        private const val junitVersion = "4.13.2"
-        private const val mockkVersion = "1.13.2"
-        private const val truthVersion = "1.1.3"
-
-        const val junit = "junit:junit:$junitVersion"
-        const val mockk = "io.mockk:mockk:$mockkVersion"
-        const val truth = "com.google.truth:truth:$truthVersion"
     }
 }

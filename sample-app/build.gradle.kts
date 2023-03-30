@@ -9,7 +9,7 @@ android {
     compileSdk = Deps.compileSDKVersion
 
     defaultConfig {
-        applicationId = "com.securevale.android.rasp"
+        applicationId = "com.securevale.rasp.android"
         minSdk = Deps.minSDKVersion
         targetSdk = Deps.targetSDKVersion
         versionCode = Deps.versionCode
@@ -36,6 +36,8 @@ android {
         jvmTarget = JavaVersion.VERSION_1_8.toString()
     }
     namespace = "com.securevale.rasp.android.sample"
+
+    packagingOptions.jniLibs.keepDebugSymbols += "**/*.so"
 }
 
 dependencies {

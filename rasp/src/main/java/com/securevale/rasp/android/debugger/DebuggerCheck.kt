@@ -1,12 +1,19 @@
 package com.securevale.rasp.android.debugger
 
 import android.content.Context
+import com.securevale.rasp.android.api.result.CheckType
+import com.securevale.rasp.android.api.result.DebuggerChecks
+import com.securevale.rasp.android.api.result.DebuggerChecks.DebugField
+import com.securevale.rasp.android.api.result.DebuggerChecks.Debuggable
+import com.securevale.rasp.android.api.result.DebuggerChecks.DebuggerConnected
 import com.securevale.rasp.android.check.ProbabilityCheck
+import com.securevale.rasp.android.check.WrappedCheckResult
 import com.securevale.rasp.android.check.wrappedCheck
 import com.securevale.rasp.android.debugger.checks.DebuggableChecks.hasDebugBuildConfig
 import com.securevale.rasp.android.debugger.checks.DebuggableChecks.isDebuggable
 import com.securevale.rasp.android.debugger.checks.DebuggableChecks.isDebuggerConnected
 import com.securevale.rasp.android.debugger.checks.DebuggableChecks.someoneIsWaitingForDebugger
+import com.securevale.rasp.android.util.logTime
 
 /**
  * Debugger detection check.
@@ -23,32 +30,41 @@ internal class DebuggerCheck(private val context: Context) : ProbabilityCheck() 
      */
     override val threshold = 3
 
+    override val checksMap: Map<CheckType, () -> WrappedCheckResult> = mapOf(
+        Debuggable to ::checkDebuggable,
+        DebugField to ::checkDebugField,
+        DebuggerConnected to ::checkDebuggerConnected
+    )
+
     /**
      * @see [ProbabilityCheck]
      */
-    override val checks: List<() -> Int>
-        get() = listOf(
-            ::checkDebuggable,
-            ::checkDebugField,
-            ::checkDebuggerConnected,
-        )
+    override val checkType: String = DebuggerChecks::class.java.simpleName
 
     /**
      * Checks for debuggable flag
      */
-    private fun checkDebuggable() = wrappedCheck(3) { isDebuggable(context) }
+    private fun checkDebuggable() = wrappedCheck(3, Debuggable) {
+        logTime("debuggable") {
+            isDebuggable(context)
+        }
+    }
 
     /**
      * Checks whether DEBUG field is present
      */
-    private fun checkDebugField() = wrappedCheck(3) {
-        hasDebugBuildConfig(context)
+    private fun checkDebugField() = wrappedCheck(3, DebugField) {
+        logTime("debugField") {
+            hasDebugBuildConfig(context)
+        }
     }
 
     /**
      * Checks whether debugger is connected
      */
-    private fun checkDebuggerConnected() = wrappedCheck(3) {
-        isDebuggerConnected() || someoneIsWaitingForDebugger()
+    private fun checkDebuggerConnected() = wrappedCheck(3, DebuggerConnected) {
+        logTime("debuggerConnected") {
+            isDebuggerConnected() || someoneIsWaitingForDebugger()
+        }
     }
 }

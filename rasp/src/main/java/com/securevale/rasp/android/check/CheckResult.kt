@@ -6,6 +6,7 @@ package com.securevale.rasp.android.check
 sealed interface CheckResult {
     object Vulnerable : CheckResult
     object Secure : CheckResult
+    object Ignored : CheckResult
 }
 
 /**

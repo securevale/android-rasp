@@ -1,13 +1,15 @@
+@file:Suppress("WildcardImport")
 package com.securevale.rasp.android.emulator
 
-import android.Manifest.permission.READ_PHONE_STATE
 import android.content.Context
-import androidx.annotation.RequiresPermission
+import com.securevale.rasp.android.api.result.CheckType
+import com.securevale.rasp.android.api.result.EmulatorChecks
+import com.securevale.rasp.android.api.result.EmulatorChecks.*
 import com.securevale.rasp.android.check.ProbabilityCheck
+import com.securevale.rasp.android.check.WrappedCheckResult
 import com.securevale.rasp.android.check.wrappedCheck
 import com.securevale.rasp.android.emulator.checks.DeviceChecks.isOperatorNameAndroid
 import com.securevale.rasp.android.emulator.checks.DeviceChecks.isRadioVersionSuspicious
-import com.securevale.rasp.android.emulator.checks.EMULATOR_PACKAGES
 import com.securevale.rasp.android.emulator.checks.GeneralChecks.hasSuspiciousFiles
 import com.securevale.rasp.android.emulator.checks.GeneralChecks.isAvdDevice
 import com.securevale.rasp.android.emulator.checks.GeneralChecks.isAvdHardware
@@ -16,12 +18,10 @@ import com.securevale.rasp.android.emulator.checks.GeneralChecks.isGenymotion
 import com.securevale.rasp.android.emulator.checks.GeneralChecks.isGoogleEmulator
 import com.securevale.rasp.android.emulator.checks.GeneralChecks.isMemu
 import com.securevale.rasp.android.emulator.checks.GeneralChecks.isNox
-import com.securevale.rasp.android.emulator.checks.GeneralChecks.isVBox
-import com.securevale.rasp.android.emulator.checks.MEMU_PACKAGES
 import com.securevale.rasp.android.emulator.checks.PackageChecks.hasSuspiciousPackages
-import com.securevale.rasp.android.emulator.checks.PropertiesCheck.hasQemuProperties
-import com.securevale.rasp.android.emulator.checks.SensorsCheck.areSensorsFromEmulator
-import com.securevale.rasp.android.emulator.checks.TelephonyChecks.isTelephonySuspicious
+import com.securevale.rasp.android.emulator.checks.PropertyChecks.hasQemuProperties
+import com.securevale.rasp.android.emulator.checks.SensorChecks.areSensorsFromEmulator
+import com.securevale.rasp.android.util.logTime
 
 /**
  * Emulator detection check.
@@ -31,123 +31,94 @@ import com.securevale.rasp.android.emulator.checks.TelephonyChecks.isTelephonySu
  */
 @PublishedApi
 internal class EmulatorCheck(
-    private val context: Context,
-    private val checkLevel: CheckLevel
+    private val context: Context
 ) : ProbabilityCheck() {
 
     /**
      * @see [ProbabilityCheck]
      */
-    override val threshold = when (checkLevel) {
-        CheckLevel.BASIC -> 3
-        CheckLevel.ADVANCED -> 7
-    }
+    override val threshold = 10
+
+    override val checksMap: Map<CheckType, () -> WrappedCheckResult> = mapOf(
+        AvdDevice to ::checkAvdDevice,
+        AvdHardware to ::checkAvdHardware,
+        Genymotion to ::checkGenymotion,
+        Nox to ::checkNox,
+        Memu to ::checkMemu,
+        GoogleEmulator to ::checkEmulatorGoogle,
+        Fingerprint to ::checkFingerprint,
+        SuspiciousFiles to ::checkFiles,
+        Sensors to ::checkSensors,
+        OperatorName to ::checkOperatorName,
+        RadioVersion to ::checkRadioVersion,
+        SuspiciousPackages to ::checkPackages,
+        Properties to ::checkProperties,
+    )
 
     /**
      * @see [ProbabilityCheck]
      */
-    override val checks: List<() -> Int>
-        get() = when (checkLevel) {
-            CheckLevel.BASIC -> checkBasic()
-            CheckLevel.ADVANCED -> checkAdvanced()
-        }
-
-    /**
-     * Check for basic emulator indicators.
-     */
-    private fun checkBasic() = listOf<() -> Int>(
-        ::checkAvdDevice,
-        ::checkAvdHardware,
-        ::checkGenymotion,
-        ::checkVbox,
-        ::checkNox,
-        ::checkMemu,
-        ::checkEmulatorGoogle,
-        ::checkFingerprint,
-        ::checkFiles,
-        ::checkSensors
-    )
-
-    /**
-     * Check advanced emulator indicators.
-     */
-    private fun checkAdvanced() = listOf<() -> Int>(
-        ::checkOperatorName,
-        ::checkRadioVersion,
-        ::checkPackages,
-        ::checkTelephony,
-        ::checkProperties,
-        ::checkMemuPackages
-    )
+    override val checkType: String = EmulatorChecks::class.java.simpleName
 
     /**
      * Checks whether AVD device indicators were found.
      */
-    private fun checkAvdDevice() = wrappedCheck(2) { isAvdDevice() }
+    private fun checkAvdDevice() = wrappedCheck(2, AvdDevice) { isAvdDevice() }
 
     /**
      * Checks whether AVD hardware indicators were found.
      */
-    private fun checkAvdHardware() = wrappedCheck(2) { isAvdHardware() }
+    private fun checkAvdHardware() = wrappedCheck(2, AvdHardware) { isAvdHardware() }
 
     /**
      * Checks whether device's fingerprint looks suspicious.
      */
-    private fun checkFingerprint() = wrappedCheck(2) { isFingerprintFromEmulator() }
+    private fun checkFingerprint() = wrappedCheck(2, Fingerprint) { isFingerprintFromEmulator() }
 
     /**
      * Checks whether Google emulator indicators were found.
      */
-    private fun checkEmulatorGoogle() = wrappedCheck(3) { isGoogleEmulator() }
-
-    /**
-     * Checks whether Vbox emulator indicators were found.
-     */
-    private fun checkVbox() = wrappedCheck(3) { isVBox() }
+    private fun checkEmulatorGoogle() = wrappedCheck(3, GoogleEmulator) { isGoogleEmulator() }
 
     /**
      * Checks whether Nox emulator indicators were found.
      */
-    private fun checkNox() = wrappedCheck(3) { isNox() }
+    private fun checkNox() = wrappedCheck(3, Nox) { logTime("nox") { isNox() } }
 
     /**
      * Checks whether Genymotion emulator indicators were found.
      */
-    private fun checkGenymotion() = wrappedCheck(3) { isGenymotion() }
+    private fun checkGenymotion() = wrappedCheck(3, Genymotion) {
+        logTime("genymotion") { isGenymotion() }
+    }
 
     /**
      * Checks whether Memu indicators were found.
      */
-    private fun checkMemu() = wrappedCheck(3) { isMemu() }
+    private fun checkMemu() = wrappedCheck(3, Memu) { isMemu() }
 
     /**
      * Checks whether there are any suspicious files were found.
      */
-    private fun checkFiles() = wrappedCheck(3) { hasSuspiciousFiles() }
+    private fun checkFiles() = wrappedCheck(3, SuspiciousFiles) { hasSuspiciousFiles() }
 
     /**
      * Checks whether any of the sensors looks suspicious.
      */
-    private fun checkSensors() = wrappedCheck(10) { areSensorsFromEmulator(context) }
+    private fun checkSensors() = wrappedCheck(10, Sensors) { areSensorsFromEmulator(context) }
 
     // Advanced
 
     /**
      * Checks whether radio version looks suspicious.
      */
-    private fun checkRadioVersion() = wrappedCheck(10) { isRadioVersionSuspicious() }
+    private fun checkRadioVersion() = wrappedCheck(10, RadioVersion) { isRadioVersionSuspicious() }
 
     /**
      * Checks whether there are any suspicious emulator packages on the device.
      */
     private fun checkPackages() =
-        wrappedCheck(10) { hasSuspiciousPackages(context, EMULATOR_PACKAGES) }
-
-    /**
-     * Checks whether there are any suspicious memu packages on the device.
-     */
-    private fun checkMemuPackages() =
-        wrappedCheck(10) { hasSuspiciousPackages(context, MEMU_PACKAGES) }
+        wrappedCheck(10, SuspiciousPackages) { hasSuspiciousPackages(context) }
 
     /**
      *  Section for checks which might return false positives so they cannot indicate emulator
@@ -155,20 +126,15 @@ internal class EmulatorCheck(
      */
 
     /**
-     * Checks whether telephony looks suspicious.
-     */
-    @RequiresPermission(READ_PHONE_STATE)
-    private fun checkTelephony() = wrappedCheck(5) { isTelephonySuspicious(context) }
-
-    /**
      * Checks whether operator name is Android.
      */
-    private fun checkOperatorName() = wrappedCheck(5) { isOperatorNameAndroid(context) }
+    private fun checkOperatorName() =
+        wrappedCheck(5, OperatorName) { isOperatorNameAndroid(context) }
 
     /**
      * Checks whether there are any suspicious qemu properties found on a device.
      */
-    private fun checkProperties() = wrappedCheck(3) { hasQemuProperties() }
+    private fun checkProperties() = wrappedCheck(3, Properties) { hasQemuProperties() }
 }
 
 /**

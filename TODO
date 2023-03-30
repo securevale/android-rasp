@@ -1,0 +1,10 @@
+https://medium.com/visly/rust-on-android-19f34a2fb43 - sample how to integrate with Kotlin
+    https://github.com/vislyhq/rust-android-example - github repo
+
+https://github.com/bbqsrc/cargo-ndk - cargo-ndk tool for cross-compiling
+
+https://blog.rust-lang.org/2022/06/22/sparse-registry-testing.html - update to crates.io index
+
+https://blog.svgames.pl/article/running-rust-on-android - another example for integration
+
+https://docs.rs/jni/0.20.0/jni/ - jni docs

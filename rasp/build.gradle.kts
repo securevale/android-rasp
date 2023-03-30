@@ -1,7 +1,7 @@
 import com.securevale.rasp.android.Deps
+import com.vanniktech.maven.publish.SonatypeHost
 import org.jetbrains.dokka.DokkaConfiguration.Visibility
 import org.jetbrains.dokka.gradle.DokkaTask
-import com.vanniktech.maven.publish.SonatypeHost
 
 plugins {
     id("com.android.library")
@@ -18,10 +18,6 @@ android {
         minSdk = Deps.minSDKVersion
         targetSdk = Deps.targetSDKVersion
 
-        aarMetadata {
-
-        }
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFile("consumer-rules.pro")
     }
@@ -29,10 +25,7 @@ android {
     buildTypes {
         getByName("release") {
             isMinifyEnabled = false
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
+            consumerProguardFiles( "consumer-rules.pro")
         }
 
         getByName("debug") {
@@ -74,10 +67,6 @@ dependencies {
     implementation(Deps.Android.material)
 
     debugImplementation(Deps.Debug.leakCanary)
-
-    testImplementation(Deps.Test.junit)
-    testImplementation(Deps.Test.mockk)
-    testImplementation(Deps.Test.truth)
 }
 
 tasks.dokkaHtml.configure { configureDokka(this, "dokkaHtml") }
@@ -105,11 +94,12 @@ fun configureDokka(dokkaTask: DokkaTask, outputDir: String) = dokkaTask.apply {
 
 mavenPublishing {
     group = "com.securevale.rasp"
-    version = "0.1.0"
-    coordinates("com.securevale", "rasp-android", "0.1.0")
+    version = "0.2.0"
+    coordinates("com.securevale", "rasp-android", "0.2.0")
 
     publishToMavenCentral(SonatypeHost.S01, true)
-    signAllPublications()
+    // TODO need to be resolved during release task
+//    signAllPublications()
 
     pom {
         name.set("Android RASP")

@@ -60,7 +60,7 @@ val builder = SecureAppChecker.Builder(context, emulatorCheckLevel, shouldCheckF
 Next, use the builder to create the checks and trigger them to obtain the result.
 
 ```kotlin
-import com.securevale.rasp.android.api.Result
+import com.securevale.rasp.android.api.result.Result
 
 val check = builder.build()
 val checkResult = check.check()

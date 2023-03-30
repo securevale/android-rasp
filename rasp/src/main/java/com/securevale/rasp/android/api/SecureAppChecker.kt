@@ -1,10 +1,10 @@
 package com.securevale.rasp.android.api
 
 import android.content.Context
-import com.securevale.rasp.android.check.vulnerabilityFound
-import com.securevale.rasp.android.debugger.DebuggerCheck
-import com.securevale.rasp.android.emulator.CheckLevel
-import com.securevale.rasp.android.emulator.EmulatorCheck
+import com.securevale.rasp.android.api.result.CheckType
+import com.securevale.rasp.android.api.result.Result
+import com.securevale.rasp.android.check.CHECK_ALL
+import com.securevale.rasp.android.check.ChecksMediator
 import com.securevale.rasp.android.util.isDebug
 
 /**
@@ -12,17 +12,8 @@ import com.securevale.rasp.android.util.isDebug
  */
 class SecureAppChecker private constructor() {
 
-    /**
-     * Check for emulator
-     */
     @PublishedApi
-    internal var emulatorCheck: EmulatorCheck? = null
-
-    /**
-     * Check for debug.
-     */
-    @PublishedApi
-    internal var debugCheck: DebuggerCheck? = null
+    internal lateinit var mediator: ChecksMediator
 
     /**
      * The function for checking whether device is secure.
@@ -30,10 +21,32 @@ class SecureAppChecker private constructor() {
      * @return the [Result] of the check.
      */
     @Suppress("NOTHING_TO_INLINE")
-    inline fun check(): Result = when {
-        emulatorCheck?.check()?.vulnerabilityFound() ?: false -> Result.EmulatorFound
-        debugCheck?.check()?.vulnerabilityFound() ?: false -> Result.DebuggerEnabled
-        else -> Result.Secure
+    inline fun check(): Result = mediator.check()
+
+    @Suppress("NOTHING_TO_INLINE")
+    inline fun subscribeVulnerabilitiesOnly(
+        granular: Boolean = false,
+        checkOnlyFor: Array<CheckType> = CHECK_ALL,
+        subscriber: CheckSubscriber
+    ) {
+        if (granular) {
+            mediator.checkGranular(checkOnlyFor, subscriber, true)
+        } else {
+           mediator.checkMerged(checkOnlyFor, subscriber, true)
+        }
+    }
+
+    @Suppress("NOTHING_TO_INLINE")
+    inline fun subscribe(
+        granular: Boolean = false,
+        checkOnlyFor: Array<CheckType> = CHECK_ALL,
+        subscriber: CheckSubscriber
+    ) {
+        if (granular) {
+            mediator.checkGranular(checkOnlyFor, subscriber, false)
+        } else {
+           mediator.checkGranular(checkOnlyFor, subscriber, false)
+        }
     }
 
     /**
@@ -45,23 +58,9 @@ class SecureAppChecker private constructor() {
      */
     class Builder(
         private val context: Context,
-        emulatorCheckLevel: CheckLevel? = null,
-        debuggerCheck: Boolean = false
+        private val checkEmulator: Boolean = false,
+        private val checkDebugger: Boolean = false
     ) {
-        /**
-         * The [SecureAppChecker] instance.
-         */
-        private val instance = SecureAppChecker()
-
-        init {
-            emulatorCheckLevel?.let {
-                instance.emulatorCheck = EmulatorCheck(context, it)
-            }
-
-            if (debuggerCheck) {
-                instance.debugCheck = DebuggerCheck(context)
-            }
-        }
 
         /**
          * Marks whether library will run in debug mode(it shows debug logs from the lib).
@@ -75,6 +74,8 @@ class SecureAppChecker private constructor() {
          * Returns [SecureAppChecker] instance.
          * @return the configured [SecureAppChecker] instance.
          */
-        fun build() = instance
+        fun build() = SecureAppChecker().apply {
+            mediator = ChecksMediator(context, checkEmulator, checkDebugger)
+        }
     }
 }

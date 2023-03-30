@@ -1,9 +1,6 @@
 package com.securevale.rasp.android.debugger.checks
 
 import android.content.Context
-import android.content.pm.ApplicationInfo
-import android.os.Debug
-import com.securevale.rasp.android.os.BuildFields.getBuildConfigValue
 
 /**
  * An object that contains all debugger-related check functions.
@@ -15,8 +12,8 @@ internal object DebuggableChecks {
      * @param context the Context used for check.
      * @return whether app is debuggable.
      */
-    fun isDebuggable(context: Context) =
-        (context.applicationInfo.flags and ApplicationInfo.FLAG_DEBUGGABLE) != 0
+    @JvmName("a")
+    external fun isDebuggable(context: Context): Boolean
 
     /**
      * Checks whether there is Debug config field set to true.
@@ -25,20 +22,20 @@ internal object DebuggableChecks {
      * @param context the Context used for check.
      * @return whether app is debuggable.
      */
-    fun hasDebugBuildConfig(context: Context): Boolean {
-        val field = getBuildConfigValue(context, "DEBUG")
-        return field == true
-    }
+    @JvmName("b")
+    external fun hasDebugBuildConfig(context: Context): Boolean
 
     /**
      * Checks whether there is debugger connected to the app.
-     * @return whether app is debuggable.
+     * @return whether app has debugger attached to it thus indicates whether app is debuggable.
      */
-    fun isDebuggerConnected() = Debug.isDebuggerConnected()
+    @JvmName("k")
+    external fun isDebuggerConnected(): Boolean
 
     /**
      * Checks whether there is any thread waiting for attaching the debugger.
      * @return whether app is debuggable.
      */
-    fun someoneIsWaitingForDebugger() = Debug.waitingForDebugger()
+    @JvmName("d")
+    external fun someoneIsWaitingForDebugger(): Boolean
 }
