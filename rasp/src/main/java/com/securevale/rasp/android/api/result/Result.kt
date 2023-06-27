@@ -9,4 +9,7 @@ sealed class Result {
     object Secure : Result()
 }
 
-data class ExtendedResult(val checkType: CheckType,val  vulnerable: Boolean)
+/**
+ * The extended result class which contains [CheckType] alongside with its result.
+ */
+data class ExtendedResult(val checkType: CheckType, val vulnerable: Boolean)

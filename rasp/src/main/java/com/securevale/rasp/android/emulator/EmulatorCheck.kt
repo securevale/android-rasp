@@ -1,4 +1,5 @@
 @file:Suppress("WildcardImport")
+
 package com.securevale.rasp.android.emulator
 
 import android.content.Context
@@ -21,13 +22,11 @@ import com.securevale.rasp.android.emulator.checks.GeneralChecks.isNox
 import com.securevale.rasp.android.emulator.checks.PackageChecks.hasSuspiciousPackages
 import com.securevale.rasp.android.emulator.checks.PropertyChecks.hasQemuProperties
 import com.securevale.rasp.android.emulator.checks.SensorChecks.areSensorsFromEmulator
-import com.securevale.rasp.android.util.logTime
 
 /**
  * Emulator detection check.
  *
  * @property context the app's Context.
- * @property checkLevel how detailed check should be.
  */
 @PublishedApi
 internal class EmulatorCheck(
@@ -83,13 +82,13 @@ internal class EmulatorCheck(
     /**
      * Checks whether Nox emulator indicators were found.
      */
-    private fun checkNox() = wrappedCheck(3, Nox) { logTime("nox") { isNox() } }
+    private fun checkNox() = wrappedCheck(3, Nox) { isNox() }
 
     /**
      * Checks whether Genymotion emulator indicators were found.
      */
     private fun checkGenymotion() = wrappedCheck(3, Genymotion) {
-        logTime("genymotion") { isGenymotion() }
+        isGenymotion()
     }
 
     /**
@@ -106,8 +105,6 @@ internal class EmulatorCheck(
      * Checks whether any of the sensors looks suspicious.
      */
     private fun checkSensors() = wrappedCheck(10, Sensors) { areSensorsFromEmulator(context) }
-
-    // Advanced
 
     /**
      * Checks whether radio version looks suspicious.
@@ -135,20 +132,4 @@ internal class EmulatorCheck(
      * Checks whether there are any suspicious qemu properties found on a device.
      */
     private fun checkProperties() = wrappedCheck(3, Properties) { hasQemuProperties() }
-}
-
-/**
- * Modes of operations which [EmulatorCheck] could use.
- */
-enum class CheckLevel {
-    /**
-     * Only check for basic emulator indicators. It is faster then the [ADVANCED] one's but can miss some emulators.
-     * It might be also prone to return false positives in some cases.
-     */
-    BASIC,
-
-    /**
-     * Advanced check, it it more detailed than the [BASIC] one and have bigger chance to report most of emulators correctly.
-     */
-    ADVANCED
 }

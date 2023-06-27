@@ -13,7 +13,6 @@ import com.securevale.rasp.android.debugger.checks.DebuggableChecks.hasDebugBuil
 import com.securevale.rasp.android.debugger.checks.DebuggableChecks.isDebuggable
 import com.securevale.rasp.android.debugger.checks.DebuggableChecks.isDebuggerConnected
 import com.securevale.rasp.android.debugger.checks.DebuggableChecks.someoneIsWaitingForDebugger
-import com.securevale.rasp.android.util.logTime
 
 /**
  * Debugger detection check.
@@ -45,26 +44,20 @@ internal class DebuggerCheck(private val context: Context) : ProbabilityCheck() 
      * Checks for debuggable flag
      */
     private fun checkDebuggable() = wrappedCheck(3, Debuggable) {
-        logTime("debuggable") {
             isDebuggable(context)
-        }
     }
 
     /**
      * Checks whether DEBUG field is present
      */
     private fun checkDebugField() = wrappedCheck(3, DebugField) {
-        logTime("debugField") {
-            hasDebugBuildConfig(context)
-        }
+        hasDebugBuildConfig(context)
     }
 
     /**
      * Checks whether debugger is connected
      */
     private fun checkDebuggerConnected() = wrappedCheck(3, DebuggerConnected) {
-        logTime("debuggerConnected") {
-            isDebuggerConnected() || someoneIsWaitingForDebugger()
-        }
+        isDebuggerConnected() || someoneIsWaitingForDebugger()
     }
 }

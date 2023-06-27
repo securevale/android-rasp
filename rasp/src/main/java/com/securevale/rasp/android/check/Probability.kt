@@ -36,6 +36,7 @@ fun List<() -> WrappedCheckResult>.fireGranular(subscriber: CheckSubscriber) {
 /**
  * Helper function for calling check and returning provided [wage] based on result.
  * @param wage the wage which will be returned when check is successful.
+ * @param checkType the checks that should be triggered.
  * @param check the check function which will be called.
  * @return [wage] if the [check] is successful or 0 otherwise.
  */

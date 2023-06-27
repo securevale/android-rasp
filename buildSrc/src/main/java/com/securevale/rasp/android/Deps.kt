@@ -8,10 +8,6 @@ object Deps {
     const val targetSDKVersion = 33
     const val compileSDKVersion = 33
 
-    const val kotlinVersion = "1.6.10"
-
-    const val kotlin = "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
-
     object Android {
         private const val coreCtxVersion = "1.8.0"
         private const val appcompatVersion = "1.4.2"

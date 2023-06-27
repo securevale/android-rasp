@@ -23,6 +23,14 @@ class SecureAppChecker private constructor() {
     @Suppress("NOTHING_TO_INLINE")
     inline fun check(): Result = mediator.check()
 
+    /**
+     * The function for checking whether device is secure.
+     * It will trigger all checks which were passed via [checkOnlyFor] param and returns result(s)
+     * to the [subscriber] only if the vulnerability will be found.
+     * @param granular whether it should just return result of whole check or separately for every sub-check.
+     * @param checkOnlyFor checks that should be triggered.
+     * @param subscriber subscriber where the results will be passed on.
+     */
     @Suppress("NOTHING_TO_INLINE")
     inline fun subscribeVulnerabilitiesOnly(
         granular: Boolean = false,
@@ -32,10 +40,18 @@ class SecureAppChecker private constructor() {
         if (granular) {
             mediator.checkGranular(checkOnlyFor, subscriber, true)
         } else {
-           mediator.checkMerged(checkOnlyFor, subscriber, true)
+            mediator.checkMerged(checkOnlyFor, subscriber, true)
         }
     }
 
+    /**
+     * The function for checking whether device is secure.
+     * It will trigger all checks which were passed via [checkOnlyFor] param and returns result(s)
+     * to the [subscriber].
+     * @param granular whether it should just return result of whole check or separately for every sub-check.
+     * @param checkOnlyFor checks that should be triggered.
+     * @param subscriber the subscriber where the results will be passed on.
+     */
     @Suppress("NOTHING_TO_INLINE")
     inline fun subscribe(
         granular: Boolean = false,
@@ -45,16 +61,15 @@ class SecureAppChecker private constructor() {
         if (granular) {
             mediator.checkGranular(checkOnlyFor, subscriber, false)
         } else {
-           mediator.checkGranular(checkOnlyFor, subscriber, false)
+            mediator.checkGranular(checkOnlyFor, subscriber, false)
         }
     }
 
     /**
      * Builder for [SecureAppChecker].
      * @property context the Context used for configuring checks.
-     * @param emulatorCheckLevel which check level should be used for emulator checks. If none provided then emulator check will be not triggered.
-     * @param debuggerCheck whether checks for debug should be triggered.
-     *
+     * @property checkEmulator whether emulator checks should be triggered.
+     * @property checkDebugger whether checks for debug should be triggered.
      */
     class Builder(
         private val context: Context,

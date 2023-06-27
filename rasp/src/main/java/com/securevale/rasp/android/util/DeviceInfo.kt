@@ -31,6 +31,9 @@ private fun deviceInfo(): String = """
 private fun extendedDeviceInfo(): String = """
 """.trimIndent()
 
+/**
+ * Helper function for accessing device's sensors list.
+ */
 @Suppress("UnusedPrivateMember")
 @Deprecated("Will be rewritten in native in 0.3.0", replaceWith = ReplaceWith(""))
 private fun sensorsInfo(): String = EMPTY

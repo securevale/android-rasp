@@ -10,7 +10,7 @@ internal object PackageChecks {
     /**
      * Checks whether there are any suspicious packages found.
      * @param context the app Context used for check.
-     * @return whether any suspicious packages were found.
+     * @return result of the check.
      */
     @JvmName("y")
     external fun hasSuspiciousPackages(context: Context): Boolean

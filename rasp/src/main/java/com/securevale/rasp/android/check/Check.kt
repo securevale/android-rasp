@@ -24,6 +24,9 @@ internal interface DefaultCheck : Check<CheckResult>
  */
 internal abstract class ProbabilityCheck : DefaultCheck {
 
+    /**
+     * Map of checks that were chosen to be triggered.
+     */
     protected abstract val checksMap: Map<CheckType, () -> WrappedCheckResult>
 
     /**
@@ -41,6 +44,11 @@ internal abstract class ProbabilityCheck : DefaultCheck {
      */
     protected abstract val threshold: Int
 
+    /**
+     * Function for collecting checks that needs to be called.
+     * @param checksToTrigger array of checks that needs to be called or [CHECK_ALL] if all checks
+     * should be called.
+     */
     private fun collectChecks(checksToTrigger: Array<CheckType>): List<() -> WrappedCheckResult> {
         val checksToBeCalled = mutableListOf<() -> WrappedCheckResult>()
         if (checksToTrigger.contentEquals(CHECK_ALL)) {
@@ -58,6 +66,10 @@ internal abstract class ProbabilityCheck : DefaultCheck {
 
     /**
      * The check function, it triggers all checks from the [checks].
+     * @param checksToTrigger the checks that should be triggered.
+     * @param granular whether it should return results from every [CheckType] as a granular one.
+     * @param subscriber the subscriber that should be additionally notified about the result(s)
+     * if [granular] option was chosen.
      * @return the result of the check which is [CheckResult.Vulnerable] or [CheckResult.Secure]
      * based on the fact whether threshold was matched or exceeded.
      */
@@ -77,4 +89,7 @@ internal abstract class ProbabilityCheck : DefaultCheck {
     }
 }
 
+/**
+ * Constant for triggering all checks
+ */
 val CHECK_ALL = emptyArray<CheckType>()

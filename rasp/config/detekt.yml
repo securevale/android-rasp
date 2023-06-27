@@ -69,7 +69,7 @@ comments:
     active: false
     excludes: [ '**/test/**', '**/androidTest/**' ]
   OutdatedDocumentation:
-    active: false
+    active: true
     matchTypeParameters: true
     matchDeclarationsOrder: true
     allowParamOnConstructorProperties: false
