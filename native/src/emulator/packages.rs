@@ -33,7 +33,7 @@ pub unsafe extern "C" fn Java_com_securevale_rasp_android_emulator_checks_Packag
 
         crate::util::ignore_error(&mut env);
 
-        if let Ok(_) = package_info {
+        if package_info.is_ok() {
             return u8::from(true);
         }
     }

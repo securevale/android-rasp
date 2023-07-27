@@ -2,38 +2,31 @@ use jni::objects::{JObject, JValue};
 use jni::JNIEnv;
 
 pub fn has_genymotion_files(env: &mut JNIEnv) -> bool {
-    let result = check_files_present(env, &GENYMOTION_FILES);
-    result
+    check_files_present(env, &GENYMOTION_FILES)
 }
 
 pub fn has_pipes(env: &mut JNIEnv) -> bool {
-    let result = check_files_present(env, &PIPES);
-    result
+    check_files_present(env, &PIPES)
 }
 
 pub fn has_emu_files(env: &mut JNIEnv) -> bool {
-    let result = check_files_present(env, &EMU_FILES);
-    result
+    check_files_present(env, &EMU_FILES)
 }
 
 pub fn has_x86_files(env: &mut JNIEnv) -> bool {
-    let result = check_files_present(env, &X86_FILES);
-    result
+    check_files_present(env, &X86_FILES)
 }
 
 pub fn has_andy_files(env: &mut JNIEnv) -> bool {
-    let result = check_files_present(env, &ANDY_FILES);
-    result
+    check_files_present(env, &ANDY_FILES)
 }
 
 pub fn has_nox_files(env: &mut JNIEnv) -> bool {
-    let result = check_files_present(env, &NOX_FILES);
-    result
+    check_files_present(env, &NOX_FILES)
 }
 
 pub fn has_bluestack_files(env: &mut JNIEnv) -> bool {
-    let result = check_files_present(env, &BLUE_STACKS_FILES);
-    result
+    check_files_present(env, &BLUE_STACKS_FILES)
 }
 
 fn check_files_present(env: &mut JNIEnv, suspicious_file_paths: &[&str]) -> bool {
@@ -63,7 +56,7 @@ fn check_files_present(env: &mut JNIEnv, suspicious_file_paths: &[&str]) -> bool
         }
     }
 
-    return result;
+    result
 }
 
 ///  Files which indicates that it is a Genymotion emulator.

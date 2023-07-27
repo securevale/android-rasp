@@ -12,6 +12,7 @@ use once_cell::sync::Lazy;
  * @property failedViaProcessOut whether accessing the property via reading getprop process
  * output failed.
  */
+#[allow(dead_code)]
 struct PropertiesAccessStatus {
     tried_with_reflection: bool,
     tried_with_process_out: bool,
@@ -55,8 +56,6 @@ fn flatten_result(result: Option<String>) -> String {
 }
 
 fn try_with_system_out(env: &mut JNIEnv, property_name: &String) -> Option<String> {
-    let result: String;
-
     let runtime_clz = env.find_class("java/lang/Runtime").unwrap();
 
     let runtime_obj = JObject::try_from(
@@ -116,7 +115,7 @@ fn try_with_system_out(env: &mut JNIEnv, property_name: &String) -> Option<Strin
     )
         .unwrap();
 
-    result = env
+    let result: String = env
         .get_string(&JString::from(property))
         .unwrap()
         .to_str()

@@ -1,3 +1,5 @@
+#![allow(dead_code)]
+
 use jni::JNIEnv;
 
 pub fn throw_java(env: &mut JNIEnv, message: &str) {
