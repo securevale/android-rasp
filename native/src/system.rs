@@ -1,10 +1,9 @@
-use jni::errors::Error;
 use std::collections::HashMap;
 use std::sync::Mutex;
 
-use jni::objects::{JObject, JString, JValue};
+use jni::errors::Error;
 use jni::JNIEnv;
-use log::LevelFilter::Warn;
+use jni::objects::{JObject, JString, JValue};
 use once_cell::sync::Lazy;
 
 /**

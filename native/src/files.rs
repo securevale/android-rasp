@@ -79,7 +79,7 @@ const EMU_FILES: [&str; 3] = [
     "/system/bin/qemu-props",
 ];
 
-///Pipes which indicates that it is most likely an emulator.
+/// Pipes which indicates that it is most likely an emulator.
 const X86_FILES: [&str; 9] = [
     "ueventd.android_x86.rc",
     "x86.prop",
