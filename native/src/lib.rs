@@ -11,6 +11,7 @@ mod build;
 mod debuggable;
 mod emulator;
 mod files;
+mod info;
 mod logging;
 mod system;
 mod util;

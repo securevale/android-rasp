@@ -2,14 +2,14 @@ use std::collections::HashMap;
 use std::sync::Mutex;
 
 use jni::errors::Error;
-use jni::JNIEnv;
 use jni::objects::{JObject, JString, JValue};
+use jni::JNIEnv;
 use once_cell::sync::Lazy;
 
 /**
- * Helper class for mapping already accessed properties alongside with its access status.
- * @property failedViaReflection whether accessing the property via reflections failed.
- * @property failedViaProcessOut whether accessing the property via reading getprop process
+ * Helper class which purpose is to store properties that was accessed alongside with its access status.
+ * @property failedViaReflection whether access the property with reflections failed.
+ * @property failedViaProcessOut whether access the property with reading getprop process
  * output failed.
  */
 #[allow(dead_code)]
@@ -20,7 +20,7 @@ struct PropertiesAccessStatus {
 }
 
 /**
- * Map of the properties names and its accessing status(whether they were attempted to access already or not)
+ * Map of the properties names and its accessing status(whether they were attempted to access already or not).
  */
 static FAILED_ATTEMPTS_MAP: Lazy<Mutex<HashMap<String, PropertiesAccessStatus>>> =
     Lazy::new(|| {
@@ -28,7 +28,7 @@ static FAILED_ATTEMPTS_MAP: Lazy<Mutex<HashMap<String, PropertiesAccessStatus>>>
         Mutex::new(map)
     });
 
-// Due to hidden API restrictions exposed from Android P the reflection approach is considered no-go
+// Due to hidden API restrictions exposed from Android P reflection approach is considered as no-go
 // TODO: Restrictions needs to be bypassed first, this action item will be addressed in 0.5.0 release.
 pub fn get_prop(env: &mut JNIEnv, property_name: &String) -> String {
     if let Some(property) = FAILED_ATTEMPTS_MAP
@@ -62,7 +62,7 @@ fn try_with_system_out(env: &mut JNIEnv, property_name: &String) -> Option<Strin
         env.call_static_method(runtime_clz, "getRuntime", "()Ljava/lang/Runtime;", &[])
             .unwrap(),
     )
-        .unwrap();
+    .unwrap();
 
     let process_obj = JObject::try_from(
         env.call_method(
@@ -74,9 +74,9 @@ fn try_with_system_out(env: &mut JNIEnv, property_name: &String) -> Option<Strin
                     .unwrap(),
             ))],
         )
-            .unwrap(),
+        .unwrap(),
     )
-        .unwrap();
+    .unwrap();
 
     // 1
     let buff_reader_clz = env.find_class("java/io/BufferedReader").unwrap();
@@ -91,9 +91,9 @@ fn try_with_system_out(env: &mut JNIEnv, property_name: &String) -> Option<Strin
             "()Ljava/io/InputStream;",
             &[],
         )
-            .unwrap(),
+        .unwrap(),
     )
-        .unwrap();
+    .unwrap();
 
     let args = &[JValue::Object(&input_stream_obj)];
 
@@ -113,7 +113,7 @@ fn try_with_system_out(env: &mut JNIEnv, property_name: &String) -> Option<Strin
         env.call_method(reader, "readLine", "()Ljava/lang/String;", &[])
             .unwrap(),
     )
-        .unwrap();
+    .unwrap();
 
     let result: String = env
         .get_string(&JString::from(property))

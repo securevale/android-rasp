@@ -19,9 +19,9 @@ pub unsafe extern "C" fn Java_com_securevale_rasp_android_emulator_checks_Sensor
             "(I)Ljava/util/List;",
             &[JValue::Int(-1)],
         )
-            .unwrap(),
+        .unwrap(),
     )
-        .unwrap();
+    .unwrap();
 
     let sensor_list = env.get_list(&sensor_list).unwrap();
 
@@ -35,7 +35,7 @@ pub unsafe extern "C" fn Java_com_securevale_rasp_android_emulator_checks_Sensor
                         env.call_method(sensor, "getName", "()Ljava/lang/String;", &[])
                             .unwrap(),
                     )
-                        .unwrap();
+                    .unwrap();
 
                     let name_string = &JString::from(name_field);
                     let name = env.get_string(name_string).unwrap();

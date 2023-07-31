@@ -122,23 +122,3 @@ pub unsafe extern "C" fn Java_com_securevale_rasp_android_debugger_checks_Debugg
 
     u8::from(is_debuggable.z().unwrap())
 }
-
-// JNI data types https://docs.oracle.com/javase/8/docs/technotes/guides/jni/spec/types.html
-// JNI lib https://docs.rs/jni/latest/jni/
-// Sample https://medium.com/visly/rust-on-android-19f34a2fb43
-// debugging https://stackoverflow.com/questions/54679017/how-to-debug-rust-on-android-ios
-
-// let class = env
-// .find_class("pl/martin/blog/RustOnAndroid/Result")
-// .unwrap();
-// let args: [JValue<'e>; 2] = [
-// JValue::Bool(u8::from(isok)),
-// JValue::Object(JObject::from(env.new_string(value).unwrap())),
-// ];
-// env.new_object(class, "(ZLjava/lang/String;)V", &args)
-// .unwrap()
-
-// public Result(boolean is_ok, String value) {
-// this.ok = is_ok;
-// this.value = value;
-// }

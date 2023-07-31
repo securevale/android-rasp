@@ -1,5 +1,3 @@
-#![allow(dead_code)]
-
 use jni::objects::{JObject, JString};
 use jni::JNIEnv;
 
@@ -10,7 +8,7 @@ pub fn get_build_config_value(env: &mut JNIEnv, key: &str) -> String {
         env.get_static_field(build_class, key, "Ljava/lang/String;")
             .unwrap(),
     )
-        .unwrap();
+    .unwrap();
 
     unsafe {
         return env

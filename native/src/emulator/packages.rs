@@ -1,6 +1,6 @@
-use jni::JNIEnv;
 use jni::objects::{JClass, JObject, JValue};
 use jni::sys::jboolean;
+use jni::JNIEnv;
 
 // hasSuspiciousPackages
 #[no_mangle]
@@ -16,9 +16,9 @@ pub unsafe extern "C" fn Java_com_securevale_rasp_android_emulator_checks_Packag
             "()Landroid/content/pm/PackageManager;",
             &[],
         )
-            .unwrap(),
+        .unwrap(),
     )
-        .unwrap();
+    .unwrap();
 
     for package in SUSPICIOUS_PACKAGES {
         let package_info = env.call_method(

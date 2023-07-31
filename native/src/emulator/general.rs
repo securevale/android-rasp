@@ -1,8 +1,8 @@
 #![allow(non_snake_case)]
 
-use jni::JNIEnv;
 use jni::objects::JClass;
 use jni::sys::jboolean;
+use jni::JNIEnv;
 
 use crate::build::get_build_config_value;
 

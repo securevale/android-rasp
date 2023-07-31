@@ -2,11 +2,14 @@ package com.securevale.rasp.android.sample
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.securevale.rasp.android.api.SecureAppChecker.Builder
 import com.securevale.rasp.android.api.result.Result
+import com.securevale.rasp.android.util.extendedDeviceInfo
+import com.securevale.rasp.android.util.sensorInfo
 
 class MainActivity : AppCompatActivity() {
 

@@ -8,7 +8,6 @@ struct Property<'a> {
     wanted_value: Option<&'a str>,
 }
 
-// TODO cover this method in tests, question is how option is doing equality checks
 impl<'a> Property<'a> {
     fn indicates_emulator(&self, found_value: Option<&str>) -> bool {
         found_value == self.wanted_value
@@ -21,10 +20,14 @@ pub unsafe extern "C" fn Java_com_securevale_rasp_android_emulator_checks_Proper
     mut env: JNIEnv,
     _class: JClass,
 ) -> jboolean {
+    u8::from(properties_count(&mut env) >= EMULATOR_PROPERTIES_THRESHOLD)
+}
+
+pub fn properties_count(env: &mut JNIEnv) -> u8 {
     let mut counter = 0;
 
     KNOWN_PROPERTIES.iter().for_each(|property| {
-        let found_property = crate::system::get_prop(&mut env, &property.name.to_string());
+        let found_property = crate::system::get_prop(env, &property.name.to_string());
         let looks_like_emulator = property.indicates_emulator(if found_property.is_empty() {
             None
         } else {
@@ -36,7 +39,7 @@ pub unsafe extern "C" fn Java_com_securevale_rasp_android_emulator_checks_Proper
         }
     });
 
-    u8::from(counter >= EMULATOR_PROPERTIES_THRESHOLD)
+    counter
 }
 
 /**

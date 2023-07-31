@@ -1,5 +1,5 @@
 mod device;
 mod general;
 mod packages;
-mod properties;
+pub mod properties;
 mod sensors;
