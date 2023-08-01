@@ -191,7 +191,7 @@ Emulator detection checks:
   the emulator makers or even by the device user (if the device is also rooted).
 - more advanced checks (such as device's operator name, telephone
   number, properties etc.). Recommended when you need to be more certain whether the device is an
-  emulator. Please note that in order to take full advantage of this check level you need to add
+  emulator. Please note that in order to take full advantage of this checks you need to add
   *android.permission.READ_PHONE_STATE* permission to your application's manifest file.
 
 Implemented checks were tested on various emulators and devices to decrease both false-positives (
@@ -202,15 +202,16 @@ accurately reported as such. The library will be continuously updated with new e
 techniques in order to catch the ones that slip through the existing checks.
 
 ## Proguard
-Library contains its own proguard rules defined but there is one caveat regarding the  `DebugField`
-check. It relies on `BuildConfig` class which needs to be excluded from obfuscation, in order to do that add to 
-your proguard configuration:
+
+Library contains its own proguard rules defined, except one caveat regarding the `DebugField`
+check. It relies on `BuildConfig` class which needs to be excluded from obfuscation, in order
+for this check to return correct results, add below line to your proguard configuration file:
 
 ```
 -keep class {your_package}.BuildConfig{ *; }
 ```
 
-or exclude `DebugField` check using `checkOnlyFor` array in appropriate check method.
+you can also disable this check by excluding `DebugField` in `checkOnlyFor` array field from check method.
 
 ## Versioning
 

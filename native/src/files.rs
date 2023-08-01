@@ -45,11 +45,14 @@ fn check_files_present(env: &mut JNIEnv, suspicious_file_paths: &[&str]) -> bool
             )
             .unwrap();
 
-        result = env
-            .call_method(file, "exists", "()Z", &[])
-            .unwrap()
-            .z()
-            .unwrap();
+        let file_exists = env.call_method(file, "exists", "()Z", &[]);
+
+        if file_exists.is_err() {
+            crate::util::ignore_error(env);
+            return false;
+        }
+
+        result = file_exists.unwrap().z().unwrap();
 
         if result {
             return result;
@@ -59,20 +62,20 @@ fn check_files_present(env: &mut JNIEnv, suspicious_file_paths: &[&str]) -> bool
     result
 }
 
-///  Files which indicates that it is a Genymotion emulator.
+///  Files that indicates that it is a Genymotion emulator.
 const GENYMOTION_FILES: [&str; 2] = ["/dev/socket/genyd", "/dev/socket/baseband_genyd"];
 
-/// Pipes which indicates that it is most likely an emulator.
+/// Pipes that indicates that it is most likely an emulator.
 const PIPES: [&str; 3] = ["/dev/socket/qemud", "/dev/qemu_pipe", "/dev/goldfish_pipe"];
 
-/// Files which indicates that it is most likely an emulator.
+/// Files that indicates that it is most likely an emulator.
 const EMU_FILES: [&str; 3] = [
     "/system/lib/libc_malloc_debug_qemu.so",
     "/sys/qemu_trace",
     "/system/bin/qemu-props",
 ];
 
-/// Pipes which indicates that it is most likely an emulator.
+/// Pipes that indicates that it is most likely an emulator.
 const X86_FILES: [&str; 9] = [
     "ueventd.android_x86.rc",
     "x86.prop",
@@ -85,10 +88,10 @@ const X86_FILES: [&str; 9] = [
     "ueventd.ranchu.rc",
 ];
 
-/// Pipes which indicates that it is an Andy emulator.
+/// Pipes that indicates that it is an Andy emulator.
 const ANDY_FILES: [&str; 2] = ["fstab.andy", "ueventd.andy.rc"];
 
-/// Pipes which indicates that it is a Nox emulator.
+/// Pipes that indicates that it is a Nox emulator.
 const NOX_FILES: [&str; 5] = [
     "fstab.nox",
     "init.nox.rc",
@@ -97,7 +100,7 @@ const NOX_FILES: [&str; 5] = [
     "/YSLauncher",
 ];
 
-/// Pipes which indicates that it is a BlueStacks emulator.
+/// Pipes that indicates that it is a BlueStacks emulator.
 const BLUE_STACKS_FILES: [&str; 2] = [
     "/Android/data/com.bluestacks.home",
     "/Android/data/com.bluestacks.settings",

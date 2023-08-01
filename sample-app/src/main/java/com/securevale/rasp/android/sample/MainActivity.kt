@@ -1,7 +1,12 @@
 package com.securevale.rasp.android.sample
 
 import android.annotation.SuppressLint
+import android.content.pm.ApplicationInfo
+import android.hardware.SensorManager
+import android.os.Build
 import android.os.Bundle
+import android.os.Debug
+import android.telephony.TelephonyManager
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -10,6 +15,9 @@ import com.securevale.rasp.android.api.SecureAppChecker.Builder
 import com.securevale.rasp.android.api.result.Result
 import com.securevale.rasp.android.util.extendedDeviceInfo
 import com.securevale.rasp.android.util.sensorInfo
+import java.io.BufferedReader
+import java.io.File
+import java.io.InputStreamReader
 
 class MainActivity : AppCompatActivity() {
 

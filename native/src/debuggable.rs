@@ -82,25 +82,33 @@ pub unsafe extern "C" fn Java_com_securevale_rasp_android_debugger_checks_Debugg
 
     let package = &JString::from(package);
 
-    let packageName = env.get_string(package).unwrap();
+    let package_name = env.get_string(package).unwrap();
 
-    let clazz_obj = JObject::try_from(
-        env.call_static_method(
-            clazz,
-            "forName",
-            "(Ljava/lang/String;)Ljava/lang/Class;",
-            &[JValue::Object(&JObject::from(
-                env.new_string(packageName.to_str().unwrap().to_owned() + ".BuildConfig")
-                    .unwrap(),
-            ))],
-        )
-        .unwrap(),
-    )
-    .unwrap();
+    let build_config_class = env.call_static_method(
+        clazz,
+        "forName",
+        "(Ljava/lang/String;)Ljava/lang/Class;",
+        &[JValue::Object(&JObject::from(
+            env.new_string(package_name.to_str().unwrap().to_owned() + ".BuildConfig")
+                .unwrap(),
+        ))],
+    );
+
+    if build_config_class.is_err() {
+        crate::util::ignore_error(&mut env);
+        return u8::from(false);
+    }
+
+    let clazz_obj = JObject::try_from(build_config_class.unwrap());
+
+    if clazz_obj.is_err() {
+        crate::util::ignore_error(&mut env);
+        return u8::from(false);
+    }
 
     let field = JObject::try_from(
         env.call_method(
-            clazz_obj,
+            clazz_obj.unwrap(),
             "getField",
             "(Ljava/lang/String;)Ljava/lang/reflect/Field;",
             &[JValue::Object(&JObject::from(

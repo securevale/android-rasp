@@ -1,8 +1,8 @@
 package com.securevale.rasp.android
 
 object Deps {
-    const val versionCode = 2
-    const val versionName = "0.2.0"
+    const val versionCode = 3
+    const val versionName = "0.3.0"
 
     const val minSDKVersion = 23
     const val targetSDKVersion = 33

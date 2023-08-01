@@ -64,19 +64,22 @@ fn try_with_system_out(env: &mut JNIEnv, property_name: &String) -> Option<Strin
     )
     .unwrap();
 
-    let process_obj = JObject::try_from(
-        env.call_method(
-            runtime_obj,
-            "exec",
-            "(Ljava/lang/String;)Ljava/lang/Process;",
-            &[JValue::Object(&JObject::from(
-                env.new_string(format!("{} {} {}", "getprop", property_name, ""))
-                    .unwrap(),
-            ))],
-        )
-        .unwrap(),
-    )
-    .unwrap();
+    let exec = env.call_method(
+        runtime_obj,
+        "exec",
+        "(Ljava/lang/String;)Ljava/lang/Process;",
+        &[JValue::Object(&JObject::from(
+            env.new_string(format!("{} {} {}", "getprop", property_name, ""))
+                .unwrap(),
+        ))],
+    );
+
+    if exec.is_err() {
+        crate::util::ignore_error(env);
+        return None;
+    }
+
+    let process_obj = JObject::try_from(exec.unwrap()).unwrap();
 
     // 1
     let buff_reader_clz = env.find_class("java/io/BufferedReader").unwrap();
@@ -109,11 +112,14 @@ fn try_with_system_out(env: &mut JNIEnv, property_name: &String) -> Option<Strin
         )
         .unwrap();
 
-    let property = JObject::try_from(
-        env.call_method(reader, "readLine", "()Ljava/lang/String;", &[])
-            .unwrap(),
-    )
-    .unwrap();
+    let line = env.call_method(reader, "readLine", "()Ljava/lang/String;", &[]);
+
+    if line.is_err() {
+        crate::util::ignore_error(env);
+        return None;
+    }
+
+    let property = JObject::try_from(line.unwrap()).unwrap();
 
     let result: String = env
         .get_string(&JString::from(property))

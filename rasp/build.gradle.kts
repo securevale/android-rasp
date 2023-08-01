@@ -94,8 +94,8 @@ fun configureDokka(dokkaTask: DokkaTask, outputDir: String) = dokkaTask.apply {
 
 mavenPublishing {
     group = "com.securevale.rasp"
-    version = "0.2.0"
-    coordinates("com.securevale", "rasp-android", "0.2.0")
+    version = "0.3.0"
+    coordinates("com.securevale", "rasp-android", "0.3.0")
 
     publishToMavenCentral(SonatypeHost.S01, true)
 //    signAllPublications()
