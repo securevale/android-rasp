@@ -98,7 +98,7 @@ mavenPublishing {
     coordinates("com.securevale", "rasp-android", "0.3.0")
 
     publishToMavenCentral(SonatypeHost.S01, true)
-//    signAllPublications()
+    signAllPublications()
 
     pom {
         name.set("Android RASP")

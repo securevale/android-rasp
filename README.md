@@ -1,9 +1,9 @@
 # Android RASP
 
 [![CI](https://github.com/securevale/android-rasp/actions/workflows/ci.yml/badge.svg)](https://github.com/securevale/android-rasp/actions/workflows/ci.yml)
-[![Kotlin](https://img.shields.io/badge/kotlin-1.7.20-blue)](https://kotlinlang.org/docs/whatsnew1720.html)
+[![Kotlin](https://img.shields.io/badge/kotlin-1.8.20-blue)](https://kotlinlang.org/docs/whatsnew1820.html)
 [![Android](https://img.shields.io/badge/androidSDK-33-brightgreen)](https://developer.android.com/about/versions/13)
-[![Gradle](https://img.shields.io/badge/gradle-8.0.2-green)](https://docs.gradle.org/8.0.2/release-notes.html)
+[![Gradle](https://img.shields.io/badge/gradle-8.1.0-green)](https://docs.gradle.org/8.1/release-notes.html)
 [![Maven](https://maven-badges.herokuapp.com/maven-central/com.securevale/rasp-android/badge.svg)](https://search.maven.org/artifact/com.securevale/rasp-android)
 
 An open-source RASP (Runtime Application Self-Protection) solution for protecting Android apps
@@ -113,7 +113,7 @@ check.subscribe(
     })
 ```
 
-Or even subscribe to be notified only if potential vulnerability will be found:
+Or even subscribe in order to be notified only if potential vulnerability will be found:
 
 ```kotlin
 import com.securevale.rasp.android.api.CheckSubscriber
@@ -130,7 +130,7 @@ check.subscribeVulnerabilitiesOnly(
     })
 ```
 
-You can also choose which checks should be run per any check by passing appropriate list to
+You can also choose which checks should be run per by passing appropriate list to
 the `checkOnlyFor` parameter.
 
 ```kotlin
