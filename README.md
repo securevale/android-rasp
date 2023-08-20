@@ -9,7 +9,8 @@
 An open-source RASP (Runtime Application Self-Protection) solution for protecting Android apps
 against being run on vulnerable devices.
 
-> **NOTE:** Android RASP is still in development, meaning that some breaking changes are likely to
+> [!NOTE]  
+> Android RASP is still in development, meaning that some breaking changes are likely to
 > be introduced in future releases.
 > See [Versioning](#versioning) section for more information.
 
@@ -26,11 +27,10 @@ cannot afford spending hundreds of dollars per month to defend against this kind
 allowing to take control over application execution, security threat detection, and real-time attack
 prevention.
 
-> ** DISCLAIMER **
-> While adopting this library will shield your app against a number of threats that could only be
-> detected at runtime, you need to remember that no security measure can ever guarantee absolute
-> security. Any motivated and skilled enough attacker will eventually bypass all security
-> protections.
+> [!NOTE]  
+> While adopting this library will shield your app against a number of runtime security threats, 
+> you need to remember that no security measure can ever guarantee absolute security. 
+> Any motivated and skilled enough attacker will eventually bypass all security protections.
 > For this reason, **always keep your threat models up to date**.
 
 ## Getting started
@@ -43,7 +43,7 @@ repositories {
 }
 ```
 
-Next you just need to add library as a dependency.
+Next, add Android RASP library as a dependency to your project.
 
 ```groovy
 dependencies {
@@ -51,8 +51,9 @@ dependencies {
 }
 ```
 
-Before first use the library needs to be initialised, initialisation should be done only once per
-app's lifecycle so the best place for doing it is the app's Application class.
+Before first use, the library needs to be initialised with `init()` method. This method is 
+expected to be called only once per app's lifecycle, so the best place for doing it is inside 
+of your app's `Application` class.
 
 ```kotlin
 import com.securevale.rasp.android.native.SecureApp
@@ -66,7 +67,7 @@ class SampleApplication : Application() {
 }
 ```
 
-Then next step will be creating the builder with the desired configuration options.
+Then, create a `builder` with the desired configuration options.
 
 ```kotlin
 import com.securevale.rasp.android.emulator.CheckLevel
@@ -74,6 +75,7 @@ import com.securevale.rasp.android.api.SecureAppChecker
 
 val shouldCheckForEmulator = true
 val shouldCheckForDebugger = true
+
 val builder = SecureAppChecker.Builder(
     context,
     checkEmulator = shouldCheckForEmulator,
@@ -81,7 +83,7 @@ val builder = SecureAppChecker.Builder(
 )
 ```
 
-Next, use the builder to create the checks and trigger them to obtain the result.
+Use the `builder` to create the RASP checks and trigger them to obtain the result.
 
 ```kotlin
 import com.securevale.rasp.android.api.result.Result
@@ -92,11 +94,11 @@ val checkResult = check.check()
 when (checkResult) {
     is Result.EmulatorFound -> {} // app is most likely running on emulator
     is Result.DebuggerEnabled -> {} // app is in debug mode
-    is Result.Secure -> {} // app looks safe
+    is Result.Secure -> {} // OK, no threats detected
 }
 ```
 
-You can do more granular checks.
+You can also perform more granular checks.
 
 ```kotlin
 import com.securevale.rasp.android.api.CheckSubscriber
@@ -113,7 +115,7 @@ check.subscribe(
     })
 ```
 
-Or even subscribe in order to be notified only if potential vulnerability will be found:
+Or even subscribe in order to be notified only when a potential threat is detected.
 
 ```kotlin
 import com.securevale.rasp.android.api.CheckSubscriber
@@ -130,7 +132,7 @@ check.subscribeVulnerabilitiesOnly(
     })
 ```
 
-You can also choose which checks should be run per by passing appropriate list to
+You can also choose which checks should be run by passing appropriate list to
 the `checkOnlyFor` parameter.
 
 ```kotlin
@@ -159,64 +161,65 @@ check.subscribeVulnerabilitiesOnly(
     })
 ```
 
-For more information about possible options check
+For more information about available configuration options, see
 [SecureAppChecker](https://github.com/securevale/android-rasp/blob/master/rasp/src/main/java/com/securevale/rasp/android/api/SecureAppChecker.kt)
 class documentation.
 
-> **NOTE:** A skilled attacker might be able to repackage protected app and remove the checks from
+> [!IMPORTANT]
+> A skilled attacker might be able to repackage protected app and remove the checks from
 > the source code.
 > With that said, it is highly recommended to add these checks in multiple places in code, so as to
 > maximize the cost and effort required to successfully bypass all the checks.
 > Additionally, in order to further impede the malicious actors' life, the library checks are
 > written
-> in native code(using Rust language) and attached to library source code as `.so` library files.
+> in native code (using Rust language) and distributed with library source code as `.so` library files.
 
-This tool is still in a very early stage of the development and it currently supports only two
-checks:
-
-- Debugger Detection
-- Emulator Detection
+## Supported Checks
 
 ### Debugger Detection
 
-Based on several checks for debug flags, connected debugger or whether there are any threads waiting
-for debugger to be attached.
+Includes:
+
+- Several checks for debug flags;
+- Check for connected debugger;
+- Check for threads waiting for the debugger to be attached.
 
 ### Emulator Detection
 
-Emulator detection checks:
+Includes:
 
-- "basic" emulator indicators (mostly device build configuration
+- Check for "basic" emulator indicators (mostly device build configuration
   fields indicating whether particular device is "real" or not). These fields can be easily faked by
-  the emulator makers or even by the device user (if the device is also rooted).
-- more advanced checks (such as device's operator name, telephone
-  number, properties etc.). Recommended when you need to be more certain whether the device is an
-  emulator. Please note that in order to take full advantage of this checks you need to add
-  *android.permission.READ_PHONE_STATE* permission to your application's manifest file.
+  the emulator makers or even by the device user (if the device happens to be rooted);
+- More advanced checks (such as device's operator name, telephone number, properties etc.). 
+  Recommended when you need to be more certain whether the device is an
+  emulator. Please note that in order to take full advantage of these checks, you need to add
+  *android.permission.READ_PHONE_STATE* permission to your application manifest file.
 
-Implemented checks were tested on various emulators and devices to decrease both false-positives (
-when device that is not an emulator is reported as one) and false-negatives, but as the detection
-techniques become more advanced the emulator hiding techniques are improving as well. This is a
+All implemented checks were tested on various emulators and devices to decrease both false-positives (
+when device that is not an emulator is reported as one) and false-negatives. However, as the detection
+techniques become more advanced, the emulator detection bypass tools are improving as well. This is a
 never ending cat and mouse game, so there is no guarantee that all emulators will be correctly and
-accurately reported as such. The library will be continuously updated with new emulator detection
-techniques in order to catch the ones that slip through the existing checks.
+accurately reported as such. The library shall be continuously updated with new emulator detection
+techniques with the aim of catching the emulators that slip through the existing checks.
 
-## Proguard
+## ProGuard
 
-Library contains its own proguard rules defined, except one caveat regarding the `DebugField`
-check. It relies on `BuildConfig` class which needs to be excluded from obfuscation, in order
-for this check to return correct results, add below line to your proguard configuration file:
+Android RASP ships with its own ProGuard rules, except one caveat regarding the `DebugField`
+check. The library relies on `BuildConfig` class which needs to be excluded from obfuscation. In order
+for this check to return correct results, add the following line to your ProGuard configuration file:
 
 ```
 -keep class {your_package}.BuildConfig{ *; }
 ```
 
-you can also disable this check by excluding `DebugField` in `checkOnlyFor` array field from check method.
+Alternatively, you can opt out from this check by excluding `DebugField` from an array of checks passed to 
+`checkOnlyFor` parameter.
 
 ## Versioning
 
 This project follows [semantic versioning](https://semver.org/). While still in major version `0`,
-source-stability is only guaranteed within minor versions (e.g. between `0.1.0` and `0.1.1`). If you
+source-stability is only guaranteed within minor versions (e.g. between `0.3.0` and `0.3.1`). If you
 want to guard against potentially source-breaking package updates, you can specify your package
 dependency using exact version as the requirement.
 
