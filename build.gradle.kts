@@ -9,6 +9,12 @@ plugins {
     id("com.vanniktech.maven.publish") version "0.25.2"
 }
 
+val versionCode by extra { 3 }
+val versionName by extra { "0.3.0" }
+val minSdkVersion by extra { 23 }
+val compileSdkVersion by extra { 33 }
+val targetSdkVersion by extra { 33 }
+
 task("clean", type = Delete::class) {
     delete(rootProject.buildDir)
 }

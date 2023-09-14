@@ -1,4 +1,3 @@
-import com.securevale.rasp.android.Deps
 import com.vanniktech.maven.publish.SonatypeHost
 import org.jetbrains.dokka.DokkaConfiguration.Visibility
 import org.jetbrains.dokka.gradle.DokkaTask
@@ -12,11 +11,11 @@ plugins {
 }
 
 android {
-    compileSdk = Deps.compileSDKVersion
+    compileSdk = rootProject.extra["compileSdkVersion"] as Int
 
     defaultConfig {
-        minSdk = Deps.minSDKVersion
-        targetSdk = Deps.targetSDKVersion
+        minSdk = rootProject.extra["minSdkVersion"] as Int
+        targetSdk = rootProject.extra["targetSdkVersion"] as Int
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFile("consumer-rules.pro")
@@ -47,6 +46,7 @@ android {
     lint {
         abortOnError = true
         warningsAsErrors = true
+        disable += "GradleDependency"
     }
 
     detekt {
@@ -62,11 +62,11 @@ android {
 }
 
 dependencies {
-    implementation(Deps.Android.coreKtx)
-    implementation(Deps.Android.appcompat)
-    implementation(Deps.Android.material)
+    implementation(libs.androidx.corektx)
+    implementation(libs.androidx.appcompat)
+    implementation(libs.google.material)
 
-    debugImplementation(Deps.Debug.leakCanary)
+    debugImplementation(libs.square.leakcanary)
 }
 
 tasks.dokkaHtml.configure { configureDokka(this, "dokkaHtml") }

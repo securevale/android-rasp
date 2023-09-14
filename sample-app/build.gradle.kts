@@ -1,19 +1,17 @@
-import com.securevale.rasp.android.Deps
-
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
 }
 
 android {
-    compileSdk = Deps.compileSDKVersion
+    compileSdk = rootProject.extra["compileSdkVersion"] as Int
 
     defaultConfig {
         applicationId = "com.securevale.rasp.android"
-        minSdk = Deps.minSDKVersion
-        targetSdk = Deps.targetSDKVersion
-        versionCode = Deps.versionCode
-        versionName = Deps.versionName
+        minSdk = rootProject.extra["minSdkVersion"] as Int
+        targetSdk = rootProject.extra["targetSdkVersion"] as Int
+        versionCode = rootProject.extra["versionCode"] as Int
+        versionName = rootProject.extra["versionName"] as String
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -42,8 +40,8 @@ android {
 
 dependencies {
     implementation(project(":rasp"))
-    implementation(Deps.Android.coreKtx)
-    implementation(Deps.Android.appcompat)
-    implementation(Deps.Android.material)
-    implementation(Deps.Android.constraintLayout)
+    implementation(libs.androidx.corektx)
+    implementation(libs.androidx.appcompat)
+    implementation(libs.google.material)
+    implementation(libs.androidx.constraintlayout)
 }

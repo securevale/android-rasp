@@ -1,0 +1,37 @@
+[versions]
+appcompat = "1.6.1"
+constraintLayout = "2.1.4"
+coreKtx = "1.10.1" # can be upgraded when target SDK 34
+leakCanary = "2.9.1"
+material = "1.9.0"
+
+# plugins
+androidGradlePlugin = "8.1.1"
+androidLibraryPlugin = "8.1.1"
+detektPlugin = "1.23.0"
+dokkaPlugin = "1.8.20"
+kotlinAndroidPlugin = "1.9.0"
+kotlinJvmPlugin = "1.9.0"
+mavenPublishPlugin = "0.25.2"
+
+[libraries]
+androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "appcompat" }
+androidx-constraintlayout = { module = "androidx.constraintlayout:constraintlayout", version.ref = "constraintLayout" }
+androidx-corektx = { module = "androidx.core:core-ktx", version.ref = "coreKtx" }
+
+google-material = { module = "com.google.android.material:material", version.ref = "material" }
+
+square-leakcanary = { module = "com.squareup.leakcanary:leakcanary-android", version.ref = "leakCanary" }
+
+[plugins]
+# Prepared but not used until https://youtrack.jetbrains.com/issue/KTIJ-19369 will be resolved. Otherwise all .gradle.kts files becomes red due to error.
+android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
+android-library = { id = "com.android.library", version.ref = "androidLibraryPlugin" }
+
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlinAndroidPlugin" }
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlinJvmPlugin" }
+
+detekt = { id = "io.gitlab.arturbosch.detek", version.ref = "detektPlugin" }
+dokka = { id = "org.jetbrains.dokka", version.ref = "dokkaPlugin" }
+
+maven-publish = { id = "com.vanniktech.maven.publish", version.ref = "mavenPublishPlugin" }
