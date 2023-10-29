@@ -1,9 +1,10 @@
 use std::collections::HashMap;
 use std::sync::Mutex;
 
+use crate::util;
 use jni::errors::Error;
-use jni::JNIEnv;
 use jni::objects::{JObject, JString, JValue};
+use jni::JNIEnv;
 use once_cell::sync::Lazy;
 
 /**
@@ -62,7 +63,7 @@ fn try_with_system_out(env: &mut JNIEnv, property_name: &String) -> Option<Strin
         env.call_static_method(runtime_clz, "getRuntime", "()Ljava/lang/Runtime;", &[])
             .unwrap(),
     )
-        .unwrap();
+    .unwrap();
 
     let exec = env.call_method(
         runtime_obj,
@@ -75,9 +76,7 @@ fn try_with_system_out(env: &mut JNIEnv, property_name: &String) -> Option<Strin
     );
 
     if exec.is_err() {
-        return crate::util::ignore_error_with_default(env, || {
-            None::<String>
-        });
+        return util::ignore_error_with_default(env, || None::<String>);
     }
 
     let process_obj = JObject::try_from(exec.unwrap()).unwrap();
@@ -95,9 +94,9 @@ fn try_with_system_out(env: &mut JNIEnv, property_name: &String) -> Option<Strin
             "()Ljava/io/InputStream;",
             &[],
         )
-            .unwrap(),
+        .unwrap(),
     )
-        .unwrap();
+    .unwrap();
 
     let args = &[JValue::Object(&input_stream_obj)];
 
@@ -116,9 +115,7 @@ fn try_with_system_out(env: &mut JNIEnv, property_name: &String) -> Option<Strin
     let line = env.call_method(reader, "readLine", "()Ljava/lang/String;", &[]);
 
     if line.is_err() {
-        return crate::util::ignore_error_with_default(env, || {
-            None::<String>
-        });
+        return util::ignore_error_with_default(env, || None::<String>);
     }
 
     let property = JObject::try_from(line.unwrap()).unwrap();

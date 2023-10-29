@@ -1,7 +1,10 @@
+use std::string::ToString;
+
 use jni::objects::JClass;
 use jni::sys::jboolean;
 use jni::JNIEnv;
-use std::string::ToString;
+
+use crate::system;
 
 struct Property<'a> {
     name: &'a str,
@@ -27,7 +30,7 @@ pub fn properties_count(env: &mut JNIEnv) -> u8 {
     let mut counter = 0;
 
     KNOWN_PROPERTIES.iter().for_each(|property| {
-        let found_property = crate::system::get_prop(env, &property.name.to_string());
+        let found_property = system::get_prop(env, &property.name.to_string());
         let looks_like_emulator = property.indicates_emulator(if found_property.is_empty() {
             None
         } else {

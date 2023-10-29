@@ -2,6 +2,8 @@ use jni::objects::{JClass, JObject, JString};
 use jni::sys::jboolean;
 use jni::JNIEnv;
 
+use crate::system;
+
 // isRadioVersionSuspicious
 #[no_mangle]
 pub unsafe extern "C" fn Java_com_securevale_rasp_android_emulator_checks_DeviceChecks_u(
@@ -35,8 +37,7 @@ pub unsafe extern "C" fn Java_com_securevale_rasp_android_emulator_checks_Device
     _class: JClass,
     context: JObject<'a>,
 ) -> jboolean {
-    let telephony_manager_obj =
-        crate::system::get_system_service(&mut env, context, "phone").unwrap();
+    let telephony_manager_obj = system::get_system_service(&mut env, context, "phone").unwrap();
 
     let network_operator_name = JObject::try_from(
         env.call_method(

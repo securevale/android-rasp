@@ -5,6 +5,7 @@ use jni::sys::jboolean;
 use jni::JNIEnv;
 
 use crate::build::get_build_config_value;
+use crate::{build, files, system};
 
 const AVD_DEVICES: [&str; 4] = ["generic_x86_arm", "generic_x86", "generic", "x86"];
 
@@ -16,7 +17,7 @@ pub unsafe extern "C" fn Java_com_securevale_rasp_android_emulator_checks_Genera
 ) -> jboolean {
     let is_avd_device = AVD_DEVICES.contains(&"generic_x86_arm");
 
-    let board = get_build_config_value(&mut env, crate::build::BOARD);
+    let board = get_build_config_value(&mut env, build::BOARD);
 
     let result = is_avd_device || board == "goldfish_x86" || board == "unknown";
 
@@ -29,7 +30,7 @@ pub unsafe extern "C" fn Java_com_securevale_rasp_android_emulator_checks_Genera
     mut env: JNIEnv,
     _class: JClass,
 ) -> jboolean {
-    let hardware = get_build_config_value(&mut env, crate::build::HARDWARE);
+    let hardware = get_build_config_value(&mut env, build::HARDWARE);
 
     let result = hardware == "goldfish"
         || hardware == "unknown"
@@ -45,7 +46,7 @@ pub unsafe extern "C" fn Java_com_securevale_rasp_android_emulator_checks_Genera
     mut env: JNIEnv,
     _class: JClass,
 ) -> jboolean {
-    let hardware = get_build_config_value(&mut env, crate::build::HARDWARE);
+    let hardware = get_build_config_value(&mut env, build::HARDWARE);
 
     u8::from(hardware == "intel")
 }
@@ -56,11 +57,11 @@ pub unsafe extern "C" fn Java_com_securevale_rasp_android_emulator_checks_Genera
     mut env: JNIEnv,
     _class: JClass,
 ) -> jboolean {
-    let hardware = get_build_config_value(&mut env, crate::build::HARDWARE);
-    let manufacturer = get_build_config_value(&mut env, crate::build::MANUFACTURER);
-    let product = get_build_config_value(&mut env, crate::build::PRODUCT);
+    let hardware = get_build_config_value(&mut env, build::HARDWARE);
+    let manufacturer = get_build_config_value(&mut env, build::MANUFACTURER);
+    let product = get_build_config_value(&mut env, build::PRODUCT);
 
-    let hasGenymotionFiles = crate::files::has_genymotion_files(&mut env);
+    let hasGenymotionFiles = files::has_genymotion_files(&mut env);
 
     let result = manufacturer.contains("Genymotion")
         || product == "vbox86p"
@@ -76,11 +77,11 @@ pub unsafe extern "C" fn Java_com_securevale_rasp_android_emulator_checks_Genera
     mut env: JNIEnv,
     _class: JClass,
 ) -> jboolean {
-    let hardware = get_build_config_value(&mut env, crate::build::HARDWARE);
-    let product = get_build_config_value(&mut env, crate::build::PRODUCT);
-    let board = get_build_config_value(&mut env, crate::build::BOARD);
+    let hardware = get_build_config_value(&mut env, build::HARDWARE);
+    let product = get_build_config_value(&mut env, build::PRODUCT);
+    let board = get_build_config_value(&mut env, build::BOARD);
 
-    let hasNoxFiles = crate::files::has_nox_files(&mut env);
+    let hasNoxFiles = files::has_nox_files(&mut env);
 
     let result = hardware.to_lowercase().contains("nox")
         || product.to_lowercase().contains("nox")
@@ -96,10 +97,10 @@ pub unsafe extern "C" fn Java_com_securevale_rasp_android_emulator_checks_Genera
     mut env: JNIEnv,
     _class: JClass,
 ) -> jboolean {
-    let has_andy_files = crate::files::has_andy_files(&mut env);
-    let has_blue_files = crate::files::has_bluestack_files(&mut env);
-    let has_x_86_files = crate::files::has_x86_files(&mut env);
-    let has_emulator_files = crate::files::has_emu_files(&mut env);
+    let has_andy_files = files::has_andy_files(&mut env);
+    let has_blue_files = files::has_bluestack_files(&mut env);
+    let has_x_86_files = files::has_x86_files(&mut env);
+    let has_emulator_files = files::has_emu_files(&mut env);
 
     let result = has_andy_files || has_blue_files || has_x_86_files || has_emulator_files;
 
@@ -112,7 +113,7 @@ pub unsafe extern "C" fn Java_com_securevale_rasp_android_emulator_checks_Genera
     mut env: JNIEnv,
     _class: JClass,
 ) -> jboolean {
-    let fingerprint = get_build_config_value(&mut env, crate::build::FINGERPRINT);
+    let fingerprint = get_build_config_value(&mut env, build::FINGERPRINT);
 
     let result = fingerprint.starts_with("generic")
         || fingerprint.starts_with("unknown")
@@ -129,13 +130,13 @@ pub unsafe extern "C" fn Java_com_securevale_rasp_android_emulator_checks_Genera
     mut env: JNIEnv,
     _class: JClass,
 ) -> jboolean {
-    let model = get_build_config_value(&mut env, crate::build::MODEL);
-    let product = get_build_config_value(&mut env, crate::build::PRODUCT);
-    let brand = get_build_config_value(&mut env, crate::build::BRAND);
-    let device = get_build_config_value(&mut env, crate::build::DEVICE);
-    let tags = get_build_config_value(&mut env, crate::build::TAGS);
+    let model = get_build_config_value(&mut env, build::MODEL);
+    let product = get_build_config_value(&mut env, build::PRODUCT);
+    let brand = get_build_config_value(&mut env, build::BRAND);
+    let device = get_build_config_value(&mut env, build::DEVICE);
+    let tags = get_build_config_value(&mut env, build::TAGS);
 
-    let hasEmulatorPipes = crate::files::has_pipes(&mut env);
+    let hasEmulatorPipes = files::has_pipes(&mut env);
 
     let result = model.contains("Android SDK built for x86")
         || model.contains("google_sdk")
@@ -151,7 +152,7 @@ pub unsafe extern "C" fn Java_com_securevale_rasp_android_emulator_checks_Genera
         || product.contains("simulator")
         || (brand.starts_with("generic") && device.starts_with("generic"))
         || tags == "dev-keys"
-        || crate::system::get_prop(&mut env, &"ro.kernel.qemu".to_string()) == "1"
+        || system::get_prop(&mut env, &"ro.kernel.qemu".to_string()) == "1"
         || hasEmulatorPipes;
 
     u8::from(result)

@@ -1,6 +1,8 @@
 use jni::objects::{JObject, JValue};
 use jni::JNIEnv;
 
+use crate::util;
+
 pub fn has_genymotion_files(env: &mut JNIEnv) -> bool {
     check_files_present(env, &GENYMOTION_FILES)
 }
@@ -48,9 +50,7 @@ fn check_files_present(env: &mut JNIEnv, suspicious_file_paths: &[&str]) -> bool
         let file_exists = env.call_method(file, "exists", "()Z", &[]);
 
         if file_exists.is_err() {
-            return crate::util::ignore_error_with_default(env, || {
-                false
-            });
+            return util::ignore_error_with_default(env, || false);
         }
 
         result = file_exists.unwrap().z().unwrap();

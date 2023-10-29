@@ -1,9 +1,11 @@
 #![allow(non_snake_case)]
 
-use crate::build::get_build_config_value;
 use jni::objects::{JClass, JObject, JString, JValue};
 use jni::sys::jstring;
 use jni::JNIEnv;
+
+use crate::build::get_build_config_value;
+use crate::{build, emulator, files, system};
 
 #[no_mangle]
 pub unsafe extern "C" fn Java_com_securevale_rasp_android_util_DeviceInfoKt_deviceInfo(
@@ -23,17 +25,17 @@ pub unsafe extern "C" fn Java_com_securevale_rasp_android_util_DeviceInfoKt_devi
          Host: {}
          Fingerprint: {}
          Tags: {}",
-        get_build_config_value(&mut env, crate::build::BOOTLOADER),
-        get_build_config_value(&mut env, crate::build::DEVICE),
-        get_build_config_value(&mut env, crate::build::MODEL),
-        get_build_config_value(&mut env, crate::build::PRODUCT),
-        get_build_config_value(&mut env, crate::build::MANUFACTURER),
-        get_build_config_value(&mut env, crate::build::BRAND),
-        get_build_config_value(&mut env, crate::build::BOARD),
-        get_build_config_value(&mut env, crate::build::HARDWARE),
-        get_build_config_value(&mut env, crate::build::HOST),
-        get_build_config_value(&mut env, crate::build::FINGERPRINT),
-        get_build_config_value(&mut env, crate::build::TAGS)
+        get_build_config_value(&mut env, build::BOOTLOADER),
+        get_build_config_value(&mut env, build::DEVICE),
+        get_build_config_value(&mut env, build::MODEL),
+        get_build_config_value(&mut env, build::PRODUCT),
+        get_build_config_value(&mut env, build::MANUFACTURER),
+        get_build_config_value(&mut env, build::BRAND),
+        get_build_config_value(&mut env, build::BOARD),
+        get_build_config_value(&mut env, build::HARDWARE),
+        get_build_config_value(&mut env, build::HOST),
+        get_build_config_value(&mut env, build::FINGERPRINT),
+        get_build_config_value(&mut env, build::TAGS)
     );
 
     env.new_string(result)
@@ -58,15 +60,15 @@ pub unsafe extern "C" fn Java_com_securevale_rasp_android_util_DeviceInfoKt_exte
          Qemu Property ro.kernel.qemu: {}
          Qemu Properties count: {}
         ",
-        crate::files::has_nox_files(&mut env),
-        crate::files::has_andy_files(&mut env),
-        crate::files::has_bluestack_files(&mut env),
-        crate::files::has_x86_files(&mut env),
-        crate::files::has_emu_files(&mut env),
-        crate::files::has_genymotion_files(&mut env),
-        crate::files::has_pipes(&mut env),
-        crate::system::get_prop(&mut env, &"ro.kernel.qemu".to_string()) == "1",
-        crate::emulator::properties::properties_count(&mut env),
+        files::has_nox_files(&mut env),
+        files::has_andy_files(&mut env),
+        files::has_bluestack_files(&mut env),
+        files::has_x86_files(&mut env),
+        files::has_emu_files(&mut env),
+        files::has_genymotion_files(&mut env),
+        files::has_pipes(&mut env),
+        system::get_prop(&mut env, &"ro.kernel.qemu".to_string()) == "1",
+        emulator::properties::properties_count(&mut env),
     );
 
     env.new_string(result)
@@ -80,8 +82,7 @@ pub unsafe extern "C" fn Java_com_securevale_rasp_android_util_DeviceInfoKt_sens
     _class: JClass,
     context: JObject<'a>,
 ) -> jstring {
-    let sensor_manager_obj =
-        crate::system::get_system_service(&mut env, context, "sensor").unwrap();
+    let sensor_manager_obj = system::get_system_service(&mut env, context, "sensor").unwrap();
 
     let sensor_list = JObject::try_from(
         env.call_method(

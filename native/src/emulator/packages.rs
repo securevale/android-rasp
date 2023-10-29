@@ -2,6 +2,8 @@ use jni::objects::{JClass, JObject, JValue};
 use jni::sys::jboolean;
 use jni::JNIEnv;
 
+use crate::util;
+
 // hasSuspiciousPackages
 #[no_mangle]
 pub unsafe extern "C" fn Java_com_securevale_rasp_android_emulator_checks_PackageChecks_y<'a>(
@@ -31,7 +33,7 @@ pub unsafe extern "C" fn Java_com_securevale_rasp_android_emulator_checks_Packag
             ],
         );
 
-        crate::util::ignore_error(&mut env);
+        util::ignore_error(&mut env);
 
         if package_info.is_ok() {
             return u8::from(true);

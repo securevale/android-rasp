@@ -2,6 +2,8 @@ use jni::objects::{JClass, JObject, JString, JValue};
 use jni::sys::jboolean;
 use jni::JNIEnv;
 
+use crate::system;
+
 // areSensorsFromEmulator
 #[no_mangle]
 pub unsafe extern "C" fn Java_com_securevale_rasp_android_emulator_checks_SensorChecks_g<'a>(
@@ -9,8 +11,7 @@ pub unsafe extern "C" fn Java_com_securevale_rasp_android_emulator_checks_Sensor
     _class: JClass,
     context: JObject<'a>,
 ) -> jboolean {
-    let sensor_manager_obj =
-        crate::system::get_system_service(&mut env, context, "sensor").unwrap();
+    let sensor_manager_obj = system::get_system_service(&mut env, context, "sensor").unwrap();
 
     let sensor_list = JObject::try_from(
         env.call_method(

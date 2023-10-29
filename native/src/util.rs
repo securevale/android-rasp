@@ -14,5 +14,5 @@ pub fn ignore_error(env: &mut JNIEnv) {
 
 pub fn ignore_error_with_default<V>(env: &mut JNIEnv, f: impl FnOnce() -> V) -> V {
     ignore_error(env);
-    return f();
+    f()
 }
