@@ -3,9 +3,9 @@ package com.securevale.rasp.android.util
 import android.util.Log
 
 /**
- * Helper function for debugging the run time of some function purposes.
- * @param tag the tag which will be used for logging
- * @param func the function to trigger
+ * Helper function for debugging the elapsed time of function execution.
+ * @param tag the tag for logging.
+ * @param func the function to trigger.
  * @return the result of [func]
  */
 fun logTime(tag: String, func: () -> Boolean): Boolean {

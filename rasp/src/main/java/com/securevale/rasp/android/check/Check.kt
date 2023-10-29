@@ -30,7 +30,8 @@ internal abstract class ProbabilityCheck : DefaultCheck {
     protected abstract val checksMap: Map<CheckType, () -> WrappedCheckResult>
 
     /**
-     * List of checks to be triggered. It contains functions which returns the Int values when successful.
+     * List of checks to be triggered. It contains functions which returns the Int values (check wages)
+     * when successful.
      */
     protected var checks: List<() -> WrappedCheckResult> = emptyList()
 
@@ -40,7 +41,8 @@ internal abstract class ProbabilityCheck : DefaultCheck {
     protected abstract val checkType: String
 
     /**
-     * Threshold on which the check should return that check failed and app is vulnerable.
+     * Threshold, if this limit is exceeded, the check will indicate a failure,
+     * signaling that the app is vulnerable.
      */
     protected abstract val threshold: Int
 
@@ -90,6 +92,6 @@ internal abstract class ProbabilityCheck : DefaultCheck {
 }
 
 /**
- * Constant for triggering all checks
+ * Constant for triggering all checks.
  */
 val CHECK_ALL = emptyArray<CheckType>()

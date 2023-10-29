@@ -118,7 +118,7 @@ internal class EmulatorCheck(
         wrappedCheck(10, SuspiciousPackages) { hasSuspiciousPackages(context) }
 
     /**
-     *  Section for checks which might return false positives so they cannot indicate emulator
+     *  Section for checks which might return false positives so they cannot indicate whether emulator
      *  is detected on their own (need to be matched with at least second positive match).
      */
 

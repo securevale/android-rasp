@@ -12,7 +12,7 @@ import com.securevale.rasp.android.emulator.EmulatorCheck
 
 /**
  * Class that acts as a mediator between the public's API of the library and its internals.
- * @param context the Context used for configuring checks.
+ * @param context the Context used for checks configuration.
  * @param emulator whether emulator checks should be triggered.
  * @param debugger whether checks for debug should be triggered.
  */
@@ -23,12 +23,12 @@ class ChecksMediator(
 ) {
 
     /**
-     * The emulator check instance
+     * The emulator check instance.
      */
     private var emulatorCheck: EmulatorCheck? = null
 
     /**
-     * The debugger check instance
+     * The debugger check instance.
      */
     private var debugCheck: DebuggerCheck? = null
 

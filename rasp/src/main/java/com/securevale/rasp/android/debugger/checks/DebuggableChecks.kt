@@ -18,7 +18,8 @@ internal object DebuggableChecks {
     /**
      * Checks whether there is Debug config field set to true.
      * It is CRUCIAL to use the app [context] here in order to receive flag value from the "main" build
-     * instead of the module's or library(which may return Debug set to true marking app debuggable incorrectly).
+     * instead of the module's or library (which may return Debug set to true causing this check to mark
+     * app as debuggable incorrectly).
      * @param context the Context used for check.
      * @return whether app is debuggable.
      */
@@ -27,7 +28,7 @@ internal object DebuggableChecks {
 
     /**
      * Checks whether there is debugger connected to the app.
-     * @return whether app has debugger attached to it thus indicates whether app is debuggable.
+     * @return whether app has debugger attached to it.
      */
     @JvmName("k")
     external fun isDebuggerConnected(): Boolean

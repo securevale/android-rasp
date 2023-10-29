@@ -3,7 +3,7 @@ package com.securevale.rasp.android.util
 import android.content.Context
 
 /**
- * Helper function for easy access to device's Build fields.
+ * Helper function for accessing device's Build fields.
  */
 external fun deviceInfo(): String
 

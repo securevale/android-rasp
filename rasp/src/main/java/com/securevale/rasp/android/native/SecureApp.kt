@@ -11,7 +11,7 @@ object SecureApp {
 
     /**
      * Method that needs to be called for library initalisation.
-     * It should be called only once par app's lifetime.
+     * It should be called only once par app's lifecycle.
      * Recommended place to call it is app's Application class.
      */
     fun init() {

@@ -6,7 +6,7 @@ import com.securevale.rasp.android.api.result.ExtendedResult
 import com.securevale.rasp.android.util.SecureAppLogger
 
 /**
- * Helper function for calling vulnerability checks against given threshold.
+ * Helper function for calling vulnerability checks with given threshold.
  * @param threshold the threshold which triggers finalization of function when reached.
  * @return whether the threshold was reached.
  */

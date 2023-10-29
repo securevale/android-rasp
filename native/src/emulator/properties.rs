@@ -46,7 +46,7 @@ pub fn properties_count(env: &mut JNIEnv) -> u8 {
 }
 
 /**
- * The qemu properties found threshold which indicates whether device is suspicious or not.
+ * The minimum qemu properties threshold which indicates whether device is suspicious or not.
  */
 const EMULATOR_PROPERTIES_THRESHOLD: u8 = 10;
 

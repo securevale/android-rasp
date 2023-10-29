@@ -9,8 +9,8 @@ use once_cell::sync::Lazy;
 
 /**
  * Helper class which purpose is to store properties that was accessed alongside with its access status.
- * @property failedViaReflection whether access the property with reflections failed.
- * @property failedViaProcessOut whether access the property with reading getprop process
+ * @property failedViaReflection whether accessing property with reflections failed.
+ * @property failedViaProcessOut whether accessing property with reading getprop process
  * output failed.
  */
 #[allow(dead_code)]
@@ -21,7 +21,7 @@ struct PropertiesAccessStatus {
 }
 
 /**
- * Map of the properties names and its accessing status(whether they were attempted to access already or not).
+ * Map of the property names and its accessing status(whether they were attempted to access already or not).
  */
 static FAILED_ATTEMPTS_MAP: Lazy<Mutex<HashMap<String, PropertiesAccessStatus>>> =
     Lazy::new(|| {
@@ -29,8 +29,8 @@ static FAILED_ATTEMPTS_MAP: Lazy<Mutex<HashMap<String, PropertiesAccessStatus>>>
         Mutex::new(map)
     });
 
-// Due to hidden API restrictions exposed from Android P reflection approach is considered as no-go
-// TODO: Restrictions needs to be bypassed first, this action item will be addressed in 0.5.0 release.
+// Due to hidden API restrictions exposed from Android P reflection approach is considered as no-go.
+// TODO: Restrictions needs to be bypassed first, this action item will be addressed in 0.7.0 release.
 pub fn get_prop(env: &mut JNIEnv, property_name: &String) -> String {
     if let Some(property) = FAILED_ATTEMPTS_MAP
         .lock()

@@ -4,9 +4,9 @@ package com.securevale.rasp.android.api.result
  * The result of the vulnerability check.
  */
 sealed class Result {
-    object EmulatorFound : Result()
-    object DebuggerEnabled : Result()
-    object Secure : Result()
+    data object EmulatorFound : Result()
+    data object DebuggerEnabled : Result()
+    data object Secure : Result()
 }
 
 /**

@@ -17,9 +17,11 @@ import com.securevale.rasp.android.debugger.checks.DebuggableChecks.someoneIsWai
 /**
  * Debugger detection check.
  *
- * @property context the app's Context, you need to use context from the main app module for initialisation here.
- * DO NOT use context from any other modules as it will result with checking incorrect BuildConfig file(not the main app one),
- * it may result in returning incorrect results from this check class.
+ * @property context: This refers to the app's Context and should be initialized using
+ * the context from the main app module.
+ *
+ * Using Context from other modules may lead to incorrect BuildConfig file checks,
+ * resulting in inaccurate results from this check class.
  */
 @PublishedApi
 internal class DebuggerCheck(private val context: Context) : ProbabilityCheck() {
@@ -41,21 +43,21 @@ internal class DebuggerCheck(private val context: Context) : ProbabilityCheck() 
     override val checkType: String = DebuggerChecks::class.java.simpleName
 
     /**
-     * Checks for debuggable flag
+     * Checks for debuggable flag.
      */
     private fun checkDebuggable() = wrappedCheck(3, Debuggable) {
-            isDebuggable(context)
+        isDebuggable(context)
     }
 
     /**
-     * Checks whether DEBUG field is present
+     * Checks whether DEBUG field is present.
      */
     private fun checkDebugField() = wrappedCheck(3, DebugField) {
         hasDebugBuildConfig(context)
     }
 
     /**
-     * Checks whether debugger is connected
+     * Checks whether debugger is connected.
      */
     private fun checkDebuggerConnected() = wrappedCheck(3, DebuggerConnected) {
         isDebuggerConnected() || someoneIsWaitingForDebugger()

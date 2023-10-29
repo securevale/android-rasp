@@ -78,7 +78,7 @@ class SecureAppChecker private constructor() {
     ) {
 
         /**
-         * Marks whether library will run in debug mode(it shows debug logs from the lib).
+         * Marks whether library will run in debug mode (it shows debug logs from the lib).
          */
         fun debug(): Builder {
             isDebug = true
