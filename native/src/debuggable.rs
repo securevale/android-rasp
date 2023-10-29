@@ -22,9 +22,9 @@ pub unsafe extern "C" fn Java_com_securevale_rasp_android_debugger_checks_Debugg
             "()Landroid/content/pm/ApplicationInfo;",
             &[],
         )
-        .unwrap(),
+            .unwrap(),
     )
-    .unwrap();
+        .unwrap();
 
     let flags = env.get_field(application_info, "flags", "I").unwrap();
 
@@ -78,7 +78,7 @@ pub unsafe extern "C" fn Java_com_securevale_rasp_android_debugger_checks_Debugg
         env.call_method(context, "getPackageName", "()Ljava/lang/String;", &[])
             .unwrap(),
     )
-    .unwrap();
+        .unwrap();
 
     let package = &JString::from(package);
 
@@ -95,15 +95,17 @@ pub unsafe extern "C" fn Java_com_securevale_rasp_android_debugger_checks_Debugg
     );
 
     if build_config_class.is_err() {
-        crate::util::ignore_error(&mut env);
-        return u8::from(false);
+        return crate::util::ignore_error_with_default(&mut env, || {
+            u8::from(false)
+        });
     }
 
     let clazz_obj = JObject::try_from(build_config_class.unwrap());
 
     if clazz_obj.is_err() {
-        crate::util::ignore_error(&mut env);
-        return u8::from(false);
+        return crate::util::ignore_error_with_default(&mut env, || {
+            u8::from(false)
+        });
     }
 
     let field = JObject::try_from(
@@ -115,9 +117,9 @@ pub unsafe extern "C" fn Java_com_securevale_rasp_android_debugger_checks_Debugg
                 env.new_string("DEBUG").unwrap(),
             ))],
         )
-        .unwrap(),
+            .unwrap(),
     )
-    .unwrap();
+        .unwrap();
 
     let is_debuggable = env
         .call_method(

@@ -48,8 +48,9 @@ fn check_files_present(env: &mut JNIEnv, suspicious_file_paths: &[&str]) -> bool
         let file_exists = env.call_method(file, "exists", "()Z", &[]);
 
         if file_exists.is_err() {
-            crate::util::ignore_error(env);
-            return false;
+            return crate::util::ignore_error_with_default(env, || {
+                false
+            });
         }
 
         result = file_exists.unwrap().z().unwrap();
