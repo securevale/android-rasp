@@ -1,11 +1,11 @@
 #![allow(non_snake_case)]
 
+use jni::JNIEnv;
 use jni::objects::JClass;
 use jni::sys::jboolean;
-use jni::JNIEnv;
 
-use crate::build::get_build_config_value;
 use crate::{build, files, system};
+use crate::build::get_build_config_value;
 
 const AVD_DEVICES: [&str; 4] = ["generic_x86_arm", "generic_x86", "generic", "x86"];
 
@@ -61,7 +61,7 @@ pub unsafe extern "C" fn Java_com_securevale_rasp_android_emulator_checks_Genera
     let manufacturer = get_build_config_value(&mut env, build::MANUFACTURER);
     let product = get_build_config_value(&mut env, build::PRODUCT);
 
-    let hasGenymotionFiles = files::has_genymotion_files(&mut env);
+    let hasGenymotionFiles = files::has_genymotion_files();
 
     let result = manufacturer.contains("Genymotion")
         || product == "vbox86p"
@@ -81,7 +81,7 @@ pub unsafe extern "C" fn Java_com_securevale_rasp_android_emulator_checks_Genera
     let product = get_build_config_value(&mut env, build::PRODUCT);
     let board = get_build_config_value(&mut env, build::BOARD);
 
-    let hasNoxFiles = files::has_nox_files(&mut env);
+    let hasNoxFiles = files::has_nox_files();
 
     let result = hardware.to_lowercase().contains("nox")
         || product.to_lowercase().contains("nox")
@@ -94,15 +94,20 @@ pub unsafe extern "C" fn Java_com_securevale_rasp_android_emulator_checks_Genera
 // hasSuspiciousFiles
 #[no_mangle]
 pub unsafe extern "C" fn Java_com_securevale_rasp_android_emulator_checks_GeneralChecks_e(
-    mut env: JNIEnv,
+    _env: JNIEnv,
     _class: JClass,
 ) -> jboolean {
-    let has_andy_files = files::has_andy_files(&mut env);
-    let has_blue_files = files::has_bluestack_files(&mut env);
-    let has_x_86_files = files::has_x86_files(&mut env);
-    let has_emulator_files = files::has_emu_files(&mut env);
+    let has_andy_files = files::has_andy_files();
+    let has_blue_files = files::has_bluestack_files();
+    let has_x_86_files = files::has_x86_files();
+    let has_emulator_files = files::has_emu_files();
+    let has_phoenix_files = files::has_phoenix_files();
 
-    let result = has_andy_files || has_blue_files || has_x_86_files || has_emulator_files;
+    let result = has_andy_files
+        || has_blue_files
+        || has_x_86_files
+        || has_emulator_files
+        || has_phoenix_files;
 
     u8::from(result)
 }
@@ -136,7 +141,7 @@ pub unsafe extern "C" fn Java_com_securevale_rasp_android_emulator_checks_Genera
     let device = get_build_config_value(&mut env, build::DEVICE);
     let tags = get_build_config_value(&mut env, build::TAGS);
 
-    let hasEmulatorPipes = files::has_pipes(&mut env);
+    let hasEmulatorPipes = files::has_pipes();
 
     let result = model.contains("Android SDK built for x86")
         || model.contains("google_sdk")
@@ -154,6 +159,51 @@ pub unsafe extern "C" fn Java_com_securevale_rasp_android_emulator_checks_Genera
         || tags == "dev-keys"
         || system::get_prop(&mut env, &"ro.kernel.qemu".to_string()) == "1"
         || hasEmulatorPipes;
+
+    u8::from(result)
+}
+
+// mountsSuspicious
+#[no_mangle]
+pub unsafe extern "C" fn Java_com_securevale_rasp_android_emulator_checks_GeneralChecks_d(
+    _env: JNIEnv,
+    _class: JClass,
+) -> jboolean {
+    let result = files::find_in_file("/proc/mounts", &["vboxsf"]).unwrap_or(false);
+
+    u8::from(result)
+}
+
+// cpuSuspicious
+#[no_mangle]
+pub unsafe extern "C" fn Java_com_securevale_rasp_android_emulator_checks_GeneralChecks_c(
+    _env: JNIEnv,
+    _class: JClass,
+) -> jboolean {
+    let result = files::find_in_file("/proc/cpuinfo", &["hypervisor", "Goldfish"]).unwrap_or(false);
+
+    u8::from(result)
+}
+
+// modulesSuspicious
+#[no_mangle]
+pub unsafe extern "C" fn Java_com_securevale_rasp_android_emulator_checks_GeneralChecks_u(
+    _env: JNIEnv,
+    _class: JClass,
+) -> jboolean {
+    let result = files::find_in_file(
+        "/proc/cpuinfo",
+        &[
+            "vboxsf",
+            "vboxguest",
+            "bstcamera",
+            "bstpgaipc",
+            "bstaudio",
+            "bstinput",
+            "bstvmsg",
+        ],
+    ).unwrap_or(false);
+
 
     u8::from(result)
 }

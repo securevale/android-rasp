@@ -46,17 +46,14 @@ pub unsafe extern "C" fn Java_com_securevale_rasp_android_emulator_checks_Packag
 /**
  * Suspicious emulator packages.
  */
-const SUSPICIOUS_PACKAGES: [&str; 13] = [
+const SUSPICIOUS_PACKAGES: [&str; 10] = [
     "com.google.android.launcher.layouts.genymotion",
     "com.bluestacks",
-    "com.bignox.app",
     "com.vphone.launcher",
-    "com.bluestacks",
     "com.bluestacks.appmart",
     "com.bignox",
     "com.bignox.app",
     "com.google.android.launcher.layouts.genymotion",
-    "com.vphone.launcher",
     "com.microvirt.tools",
     "com.microvirt.download",
     "com.mumu.store",

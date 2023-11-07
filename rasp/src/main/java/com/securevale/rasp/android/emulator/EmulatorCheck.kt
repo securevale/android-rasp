@@ -11,6 +11,7 @@ import com.securevale.rasp.android.check.WrappedCheckResult
 import com.securevale.rasp.android.check.wrappedCheck
 import com.securevale.rasp.android.emulator.checks.DeviceChecks.isOperatorNameAndroid
 import com.securevale.rasp.android.emulator.checks.DeviceChecks.isRadioVersionSuspicious
+import com.securevale.rasp.android.emulator.checks.GeneralChecks.cpuSuspicious
 import com.securevale.rasp.android.emulator.checks.GeneralChecks.hasSuspiciousFiles
 import com.securevale.rasp.android.emulator.checks.GeneralChecks.isAvdDevice
 import com.securevale.rasp.android.emulator.checks.GeneralChecks.isAvdHardware
@@ -19,6 +20,8 @@ import com.securevale.rasp.android.emulator.checks.GeneralChecks.isGenymotion
 import com.securevale.rasp.android.emulator.checks.GeneralChecks.isGoogleEmulator
 import com.securevale.rasp.android.emulator.checks.GeneralChecks.isMemu
 import com.securevale.rasp.android.emulator.checks.GeneralChecks.isNox
+import com.securevale.rasp.android.emulator.checks.GeneralChecks.modulesSuspicious
+import com.securevale.rasp.android.emulator.checks.GeneralChecks.mountsSuspicious
 import com.securevale.rasp.android.emulator.checks.PackageChecks.hasSuspiciousPackages
 import com.securevale.rasp.android.emulator.checks.PropertyChecks.hasQemuProperties
 import com.securevale.rasp.android.emulator.checks.SensorChecks.areSensorsFromEmulator
@@ -44,14 +47,17 @@ internal class EmulatorCheck(
         Genymotion to ::checkGenymotion,
         Nox to ::checkNox,
         Memu to ::checkMemu,
-        GoogleEmulator to ::checkEmulatorGoogle,
         Fingerprint to ::checkFingerprint,
         SuspiciousFiles to ::checkFiles,
+        GoogleEmulator to ::checkEmulatorGoogle,
         Sensors to ::checkSensors,
         OperatorName to ::checkOperatorName,
         RadioVersion to ::checkRadioVersion,
         SuspiciousPackages to ::checkPackages,
         Properties to ::checkProperties,
+        Mounts to ::checkMounts,
+        CPU to ::checkCPU,
+        Modules to ::checkModules
     )
 
     /**
@@ -92,6 +98,27 @@ internal class EmulatorCheck(
     }
 
     /**
+     * Checks whether mounts seems suspicious.
+     */
+    private fun checkMounts() = wrappedCheck(3, Mounts) {
+        mountsSuspicious()
+    }
+
+    /**
+     * Checks whether CPU seems suspicious.
+     */
+    private fun checkCPU() = wrappedCheck(3, CPU) {
+        cpuSuspicious()
+    }
+
+    /**
+     * Checks whether modules seems suspicious.
+     */
+    private fun checkModules() = wrappedCheck(3, Modules) {
+        modulesSuspicious()
+    }
+
+    /**
      * Checks whether Memu indicators were found.
      */
     private fun checkMemu() = wrappedCheck(3, Memu) { isMemu() }
@@ -99,7 +126,7 @@ internal class EmulatorCheck(
     /**
      * Checks whether there are any suspicious files were found.
      */
-    private fun checkFiles() = wrappedCheck(3, SuspiciousFiles) { hasSuspiciousFiles() }
+    private fun checkFiles() = wrappedCheck(5, SuspiciousFiles) { hasSuspiciousFiles() }
 
     /**
      * Checks whether any of the sensors looks suspicious.

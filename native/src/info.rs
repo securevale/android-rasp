@@ -60,13 +60,13 @@ pub unsafe extern "C" fn Java_com_securevale_rasp_android_util_DeviceInfoKt_exte
          Qemu Property ro.kernel.qemu: {}
          Qemu Properties count: {}
         ",
-        files::has_nox_files(&mut env),
-        files::has_andy_files(&mut env),
-        files::has_bluestack_files(&mut env),
-        files::has_x86_files(&mut env),
-        files::has_emu_files(&mut env),
-        files::has_genymotion_files(&mut env),
-        files::has_pipes(&mut env),
+        files::has_nox_files(),
+        files::has_andy_files(),
+        files::has_bluestack_files(),
+        files::has_x86_files(),
+        files::has_emu_files(),
+        files::has_genymotion_files(),
+        files::has_pipes(),
         system::get_prop(&mut env, &"ro.kernel.qemu".to_string()) == "1",
         emulator::properties::properties_count(&mut env),
     );

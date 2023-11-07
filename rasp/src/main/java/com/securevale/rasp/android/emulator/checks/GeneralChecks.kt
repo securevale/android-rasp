@@ -60,4 +60,25 @@ internal object GeneralChecks {
      */
     @JvmName("v")
     external fun isGoogleEmulator(): Boolean
+
+    /**
+     * Checks whether mounts seems suspicious.
+     * @return result of the check.
+     */
+    @JvmName("d")
+    external fun mountsSuspicious(): Boolean
+
+    /**
+     * Checks whether CPU seems suspicious.
+     * @return result of the check.
+     */
+    @JvmName("c")
+    external fun cpuSuspicious(): Boolean
+
+    /**
+     * Checks whether Modules seems suspicious.
+     * @return result of the check.
+     */
+    @JvmName("u")
+    external fun modulesSuspicious(): Boolean
 }

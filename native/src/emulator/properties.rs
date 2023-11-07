@@ -29,7 +29,7 @@ pub unsafe extern "C" fn Java_com_securevale_rasp_android_emulator_checks_Proper
 pub fn properties_count(env: &mut JNIEnv) -> u8 {
     let mut counter = 0;
 
-    KNOWN_PROPERTIES.iter().for_each(|property| {
+    KNOWN_SUSPICIOUS_PROPERTIES.iter().for_each(|property| {
         let found_property = system::get_prop(env, &property.name.to_string());
         let looks_like_emulator = property.indicates_emulator(if found_property.is_empty() {
             None
@@ -53,7 +53,7 @@ const EMULATOR_PROPERTIES_THRESHOLD: u8 = 10;
 /**
  * Known qemu properties.
  */
-const KNOWN_PROPERTIES: [Property; 15] = [
+const KNOWN_SUSPICIOUS_PROPERTIES: [Property; 20] = [
     Property {
         name: "init.svc.qemud",
         wanted_value: None,
@@ -87,6 +87,10 @@ const KNOWN_PROPERTIES: [Property; 15] = [
         wanted_value: Some("goldfish"),
     },
     Property {
+        name: "ro.hardware",
+        wanted_value: Some("ranchu"),
+    },
+    Property {
         name: "ro.kernel.android.qemud",
         wanted_value: None,
     },
@@ -113,5 +117,21 @@ const KNOWN_PROPERTIES: [Property; 15] = [
     Property {
         name: "ro.serialno",
         wanted_value: None,
+    },
+    Property {
+        name: "ro.secure",
+        wanted_value: Some("0"),
+    },
+    Property {
+        name: "ro.product.cpu.abilist",
+        wanted_value: Some("x86"),
+    },
+    Property {
+        name: "ro.product.model",
+        wanted_value: Some("vmos"),
+    },
+    Property {
+        name: "ro.product.vendor.name",
+        wanted_value: Some("vmos"),
     },
 ];
