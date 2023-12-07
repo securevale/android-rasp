@@ -2,7 +2,7 @@
 
 [![CI](https://github.com/securevale/android-rasp/actions/workflows/ci.yml/badge.svg)](https://github.com/securevale/android-rasp/actions/workflows/ci.yml)
 [![Kotlin](https://img.shields.io/badge/kotlin-1.8.20-blue)](https://kotlinlang.org/docs/whatsnew1820.html)
-[![Android](https://img.shields.io/badge/androidSDK-33-brightgreen)](https://developer.android.com/about/versions/13)
+[![Android](https://img.shields.io/badge/androidSDK-34-brightgreen)](https://developer.android.com/about/versions/14)
 [![Gradle](https://img.shields.io/badge/gradle-8.1.0-green)](https://docs.gradle.org/8.1/release-notes.html)
 [![Maven](https://maven-badges.herokuapp.com/maven-central/com.securevale/rasp-android/badge.svg)](https://search.maven.org/artifact/com.securevale/rasp-android)
 

@@ -12,8 +12,8 @@ plugins {
 val versionCode by extra { 4 }
 val versionName by extra { "0.4.0" }
 val minSdkVersion by extra { 23 }
-val compileSdkVersion by extra { 33 }
-val targetSdkVersion by extra { 33 }
+val compileSdkVersion by extra { 34 }
+val targetSdkVersion by extra { 34 }
 
 task("clean", type = Delete::class) {
     delete(rootProject.buildDir)
