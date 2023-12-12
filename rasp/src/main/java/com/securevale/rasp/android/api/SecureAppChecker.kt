@@ -27,7 +27,7 @@ class SecureAppChecker private constructor() {
      * The function for checking whether device is secure.
      * It will trigger all checks which were passed via [checkOnlyFor] param and returns result(s)
      * to the [subscriber] only if the vulnerability will be found.
-     * @param granular whether it should just return result of whole check or separately for every sub-check.
+     * @param granular whether it should return result separately for every sub-check or just result of whole check.
      * @param checkOnlyFor checks that should be triggered.
      * @param subscriber subscriber where the results will be passed on.
      */
@@ -48,7 +48,7 @@ class SecureAppChecker private constructor() {
      * The function for checking whether device is secure.
      * It will trigger all checks which were passed via [checkOnlyFor] param and returns result(s)
      * to the [subscriber].
-     * @param granular whether it should just return result of whole check or separately for every sub-check.
+     * @param granular whether it should return result separately for every sub-check or just result of whole check.
      * @param checkOnlyFor checks that should be triggered.
      * @param subscriber the subscriber where the results will be passed on.
      */
@@ -61,7 +61,7 @@ class SecureAppChecker private constructor() {
         if (granular) {
             mediator.checkGranular(checkOnlyFor, subscriber, false)
         } else {
-            mediator.checkGranular(checkOnlyFor, subscriber, false)
+            mediator.checkMerged(checkOnlyFor, subscriber, false)
         }
     }
 

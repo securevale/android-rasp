@@ -29,7 +29,7 @@ enum class EmulatorChecks : CheckType {
     OperatorName,
     RadioVersion,
     SuspiciousPackages,
-    Properties,
+    SuspiciousProperties,
     Mounts,
     CPU,
     Modules

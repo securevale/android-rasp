@@ -54,7 +54,7 @@ internal class EmulatorCheck(
         OperatorName to ::checkOperatorName,
         RadioVersion to ::checkRadioVersion,
         SuspiciousPackages to ::checkPackages,
-        Properties to ::checkProperties,
+        SuspiciousProperties to ::checkProperties,
         Mounts to ::checkMounts,
         CPU to ::checkCPU,
         Modules to ::checkModules
@@ -158,5 +158,5 @@ internal class EmulatorCheck(
     /**
      * Checks whether there are any suspicious qemu properties found on a device.
      */
-    private fun checkProperties() = wrappedCheck(3, Properties) { hasQemuProperties() }
+    private fun checkProperties() = wrappedCheck(3, SuspiciousProperties) { hasQemuProperties() }
 }

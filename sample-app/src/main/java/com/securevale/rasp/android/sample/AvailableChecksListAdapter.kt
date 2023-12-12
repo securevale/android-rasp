@@ -3,12 +3,12 @@ package com.securevale.rasp.android.sample
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
+import android.widget.Button
 import androidx.recyclerview.widget.RecyclerView
 
-class ChecksAdapter : RecyclerView.Adapter<ChecksAdapter.ViewHolder>() {
+class AvailableChecksListAdapter : RecyclerView.Adapter<AvailableChecksListAdapter.ViewHolder>() {
 
-    var items = listOf<TestCheck>()
+    var items = listOf<Check>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
         ViewHolder(
@@ -22,21 +22,20 @@ class ChecksAdapter : RecyclerView.Adapter<ChecksAdapter.ViewHolder>() {
 
     override fun getItemCount() = items.size
 
-
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        fun bind(data: TestCheck) = with(itemView) {
-            findViewById<TextView>(R.id.check_name).apply {
+        fun bind(data: Check) = with(itemView) {
+            findViewById<Button>(R.id.check_name).apply {
                 text = data.name
             }
 
             setOnClickListener {
-                context.startActivity(TestDetailsActivity.intent(context, data.checkData))
+                context.startActivity(CheckDetailsActivity.intent(context, data.checkData))
             }
         }
     }
 
-    data class TestCheck(
+    data class Check(
         val name: String,
-        val checkData: TestData
+        val checkData: TestType
     )
 }

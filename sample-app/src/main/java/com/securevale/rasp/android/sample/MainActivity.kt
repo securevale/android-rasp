@@ -5,8 +5,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.securevale.rasp.android.api.SecureAppChecker.Builder
-import com.securevale.rasp.android.api.result.Result
+import com.securevale.rasp.android.sample.AvailableChecksListAdapter.Check
 
 
 class MainActivity : AppCompatActivity() {
@@ -16,7 +15,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val checksAdapter = ChecksAdapter()
+        val checksAdapter = AvailableChecksListAdapter()
 
         findViewById<RecyclerView>(R.id.checks_list).apply {
             layoutManager = LinearLayoutManager(this@MainActivity)
@@ -27,31 +26,6 @@ class MainActivity : AppCompatActivity() {
         checksAdapter.notifyDataSetChanged()
     }
 
-    private val items = listOf(
-        ChecksAdapter.TestCheck(
-            "Emulator",
-            TestData(
-                listOf(
-                    "Emulator Test" action { context ->
-                        val result = Builder(context, checkEmulator = true)
-                            .build()
-                            .check()
-
-                        "${result is Result.EmulatorFound}"
-                    }
-                )
-            )),
-        ChecksAdapter.TestCheck(
-            "Debugger",
-            TestData(
-                listOf("Test" action { context ->
-                    val result = Builder(context, checkDebugger = true)
-                        .build()
-                        .check()
-
-                    "${result is Result.DebuggerEnabled}"
-                }
-                ))
-        )
-    )
+    private val items =
+        listOf(Check("Emulator", TestType.EMULATOR), Check("Debugger", TestType.DEBUGGER))
 }
