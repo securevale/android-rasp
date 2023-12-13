@@ -102,64 +102,42 @@ when (checkResult) {
 You can also perform more granular checks.
 
 ```kotlin
-import com.securevale.rasp.android.api.CheckSubscriber
-import com.securevale.rasp.android.api.result.ExtendedResult
-
 val check = builder.build()
-check.subscribe(
-    granular = true,
-    checkOnlyFor = CHECK_ALL,
-    subscriber = object : CheckSubscriber {
-        override fun onCheck(result: ExtendedResult) {
-            // examine result(s) here
-        }
-    })
+check.subscribe {
+    // examine result(s) here
+}
 ```
 
 Or even subscribe in order to be notified only when a potential threat is detected.
 
 ```kotlin
-import com.securevale.rasp.android.api.CheckSubscriber
-import com.securevale.rasp.android.api.result.ExtendedResult
-
 val check = builder.build()
-check.subscribeVulnerabilitiesOnly(
-    granular = true,
-    checkOnlyFor = CHECK_ALL,
-    subscriber = object : CheckSubscriber {
-        override fun onCheck(result: ExtendedResult) {
-            // examine result(s) here
-        }
-    })
+check.subscribeVulnerabilitiesOnly(granular = true) {
+  // examine result(s) here
+}
 ```
 
 You can also choose which checks should be run by passing appropriate list to
 the `checkOnlyFor` parameter.
 
 ```kotlin
-import com.securevale.rasp.android.api.CheckSubscriber
-import com.securevale.rasp.android.api.result.ExtendedResult
 import com.securevale.rasp.android.api.result.DebuggerChecks
 import com.securevale.rasp.android.api.result.EmulatorChecks
 
 val check = builder.build()
 check.subscribeVulnerabilitiesOnly(
-    granular = true,
-    checkOnlyFor = arrayOf(
-        EmulatorChecks.EmulatorCheck,
-        EmulatorChecks.AvdDevice,
-        EmulatorChecks.AvdHardware,
-        EmulatorChecks.Genymotion,
-        EmulatorChecks.Nox,
-        DebuggerChecks.DebuggerCheck,
-        DebuggerChecks.Debuggable,
-        DebuggerChecks.DebugField
-    ),
-    subscriber = object : CheckSubscriber {
-        override fun onCheck(result: ExtendedResult) {
-            // examine result(s) here
-        }
-    })
+  granular = true,
+  checkOnlyFor = arrayOf(
+    EmulatorChecks.AvdDevice,
+    EmulatorChecks.AvdHardware,
+    EmulatorChecks.Genymotion,
+    EmulatorChecks.Nox,
+    DebuggerChecks.Debuggable,
+    DebuggerChecks.DebugField
+  )
+) {
+  // examine result(s) here
+}
 ```
 
 For more information about available configuration options, see
