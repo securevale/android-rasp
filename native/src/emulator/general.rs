@@ -1,11 +1,11 @@
 #![allow(non_snake_case)]
 
-use jni::JNIEnv;
 use jni::objects::JClass;
 use jni::sys::jboolean;
+use jni::JNIEnv;
 
-use crate::{build, files, system};
-use crate::build::get_build_config_value;
+use crate::common::build::get_build_config_value;
+use crate::{common, common::build, common::system};
 
 const AVD_DEVICES: [&str; 4] = ["generic_x86_arm", "generic_x86", "generic", "x86"];
 
@@ -61,7 +61,7 @@ pub unsafe extern "C" fn Java_com_securevale_rasp_android_emulator_checks_Genera
     let manufacturer = get_build_config_value(&mut env, build::MANUFACTURER);
     let product = get_build_config_value(&mut env, build::PRODUCT);
 
-    let hasGenymotionFiles = files::has_genymotion_files();
+    let hasGenymotionFiles = common::files::has_genymotion_files();
 
     let result = manufacturer.contains("Genymotion")
         || product == "vbox86p"
@@ -81,7 +81,7 @@ pub unsafe extern "C" fn Java_com_securevale_rasp_android_emulator_checks_Genera
     let product = get_build_config_value(&mut env, build::PRODUCT);
     let board = get_build_config_value(&mut env, build::BOARD);
 
-    let hasNoxFiles = files::has_nox_files();
+    let hasNoxFiles = common::files::has_nox_files();
 
     let result = hardware.to_lowercase().contains("nox")
         || product.to_lowercase().contains("nox")
@@ -97,11 +97,11 @@ pub unsafe extern "C" fn Java_com_securevale_rasp_android_emulator_checks_Genera
     _env: JNIEnv,
     _class: JClass,
 ) -> jboolean {
-    let has_andy_files = files::has_andy_files();
-    let has_blue_files = files::has_bluestack_files();
-    let has_x_86_files = files::has_x86_files();
-    let has_emulator_files = files::has_emu_files();
-    let has_phoenix_files = files::has_phoenix_files();
+    let has_andy_files = common::files::has_andy_files();
+    let has_blue_files = common::files::has_bluestack_files();
+    let has_x_86_files = common::files::has_x86_files();
+    let has_emulator_files = common::files::has_emu_files();
+    let has_phoenix_files = common::files::has_phoenix_files();
 
     let result = has_andy_files
         || has_blue_files
@@ -141,7 +141,7 @@ pub unsafe extern "C" fn Java_com_securevale_rasp_android_emulator_checks_Genera
     let device = get_build_config_value(&mut env, build::DEVICE);
     let tags = get_build_config_value(&mut env, build::TAGS);
 
-    let hasEmulatorPipes = files::has_pipes();
+    let hasEmulatorPipes = common::files::has_pipes();
 
     let result = model.contains("Android SDK built for x86")
         || model.contains("google_sdk")
@@ -169,7 +169,7 @@ pub unsafe extern "C" fn Java_com_securevale_rasp_android_emulator_checks_Genera
     _env: JNIEnv,
     _class: JClass,
 ) -> jboolean {
-    let result = files::find_in_file("/proc/mounts", &["vboxsf"]).unwrap_or(false);
+    let result = common::files::find_in_file("/proc/mounts", &["vboxsf"]).unwrap_or(false);
 
     u8::from(result)
 }
@@ -180,7 +180,8 @@ pub unsafe extern "C" fn Java_com_securevale_rasp_android_emulator_checks_Genera
     _env: JNIEnv,
     _class: JClass,
 ) -> jboolean {
-    let result = files::find_in_file("/proc/cpuinfo", &["hypervisor", "Goldfish"]).unwrap_or(false);
+    let result =
+        common::files::find_in_file("/proc/cpuinfo", &["hypervisor", "Goldfish"]).unwrap_or(false);
 
     u8::from(result)
 }
@@ -191,7 +192,7 @@ pub unsafe extern "C" fn Java_com_securevale_rasp_android_emulator_checks_Genera
     _env: JNIEnv,
     _class: JClass,
 ) -> jboolean {
-    let result = files::find_in_file(
+    let result = common::files::find_in_file(
         "/proc/cpuinfo",
         &[
             "vboxsf",
@@ -202,8 +203,8 @@ pub unsafe extern "C" fn Java_com_securevale_rasp_android_emulator_checks_Genera
             "bstinput",
             "bstvmsg",
         ],
-    ).unwrap_or(false);
-
+    )
+    .unwrap_or(false);
 
     u8::from(result)
 }

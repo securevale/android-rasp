@@ -27,6 +27,7 @@ pub const BRAND: &str = "BRAND";
 pub const BOARD: &str = "BOARD";
 pub const MANUFACTURER: &str = "MANUFACTURER";
 pub const HARDWARE: &str = "HARDWARE";
+pub const DISPLAY: &str = "DISPLAY";
 pub const FINGERPRINT: &str = "FINGERPRINT";
 pub const PRODUCT: &str = "PRODUCT";
 pub const TAGS: &str = "TAGS";

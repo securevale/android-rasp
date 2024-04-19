@@ -2,7 +2,7 @@ use jni::objects::{JClass, JObject, JString, JValue};
 use jni::sys::jboolean;
 use jni::JNIEnv;
 
-use crate::system;
+use crate::common::system;
 
 // areSensorsFromEmulator
 #[no_mangle]

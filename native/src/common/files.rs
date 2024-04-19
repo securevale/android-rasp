@@ -3,10 +3,11 @@ use std::io;
 use std::io::{BufRead, BufReader};
 use std::path::Path;
 
+#[cfg(debug_assertions)]
 use log::LevelFilter::Error;
 
 #[cfg(debug_assertions)]
-use crate::logging::log_android;
+use crate::common::logging::log_android;
 
 pub fn has_genymotion_files() -> bool {
     check_files_present(&GENYMOTION_FILES)
@@ -40,12 +41,22 @@ pub fn has_phoenix_files() -> bool {
     check_files_present(&PHOENIX_FILES)
 }
 
+pub fn has_su_files() -> bool {
+    check_files_present(&SU_FILES)
+}
+
+pub fn has_busybox_files() -> bool {
+    check_files_present(&BUSYBOX_FILES)
+}
+
 fn check_files_present(suspicious_file_paths: &[&str]) -> bool {
+    let mut check_result = false;
     for file_path in suspicious_file_paths.iter() {
         match Path::new(file_path).try_exists() {
             Ok(result) => {
                 if result {
-                    return true;
+                    check_result = true;
+                    break;
                 }
             }
             Err(err) => {
@@ -58,7 +69,7 @@ fn check_files_present(suspicious_file_paths: &[&str]) -> bool {
         }
     }
 
-    false
+    check_result
 }
 
 pub fn find_in_file(file_path: &str, search_phrases: &[&str]) -> Result<bool, io::Error> {
@@ -107,6 +118,40 @@ const EMU_FILES: [&str; 19] = [
     "/system/bin/ldinit",
     "/system/app/LDAppStore/LDAppStore.apk",
     "/data/data/com.ldmnq.launcher3/files/launcher.preferences",
+];
+
+/// Su files (indicates superuser - root privileges)
+const SU_FILES: [&str; 15] = [
+    "/sbin/su",
+    "su/bin/su",
+    "/system/bin/su",
+    "/system/bin/.ext/su",
+    "/system/xbin/su",
+    "/data/local/xbin/su",
+    "/data/local/bin/su",
+    "/system/sd/xbin/su",
+    "/system/bin/failsafe/su",
+    "/system/usr/we-need-root/su",
+    "/data/local/su",
+    "/cache/su",
+    "/dev/su",
+    "/data/su",
+    "/system/app/Superuser.apk",
+];
+
+/// Busybox files TODO check what is busybox
+const BUSYBOX_FILES: [&str; 11] = [
+    "/sbin/busybox",
+    "su/bin/busybox",
+    "/system/bin/busybox",
+    "/system/bin/.ext/busybox",
+    "/system/xbin/busybox",
+    "/data/local/xbin/busybox",
+    "/data/local/bin/busybox",
+    "/system/sd/xbin/busybox",
+    "/system/bin/failsafe/busybox",
+    "/system/usr/we-need-root/busybox",
+    "/data/local/busybox",
 ];
 
 /// Pipes indicate that it is most likely an emulator.
@@ -166,4 +211,14 @@ const PHOENIX_FILES: [&str; 3] = [
     "/system/xbin/phoenix_compat",
     "/data/system/phoenixlog.addr",
     "/system/phoenixos",
+];
+
+pub const NON_WRITABLE_PATHS: [&str; 7] = [
+    "/system",
+    "/system/bin",
+    "/system/sbin",
+    "/system/xbin",
+    "/vendor/bin",
+    "/sbin",
+    "/etc",
 ];

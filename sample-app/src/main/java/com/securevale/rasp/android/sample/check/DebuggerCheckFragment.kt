@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.securevale.rasp.android.api.SecureAppChecker
 import com.securevale.rasp.android.sample.R
 
-class DebuggerCheckFragment: Fragment() {
+class DebuggerCheckFragment : Fragment() {
 
     private lateinit var checkResultsAdapter: CheckResultAdapter
 
@@ -37,6 +37,8 @@ class DebuggerCheckFragment: Fragment() {
             setOnClickListener {
                 val emulatorCheck = SecureAppChecker.Builder(requireContext(), checkDebugger = true)
                     .build()
+
+                checkResultsAdapter.clearResults()
 
                 emulatorCheck.subscribe(granular = true) {
                     checkResultsAdapter.updateItems(it)

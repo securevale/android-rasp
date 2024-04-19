@@ -27,5 +27,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     private val items =
-        listOf(Check("Emulator", TestType.EMULATOR), Check("Debugger", TestType.DEBUGGER))
+        listOf(
+            Check("Emulator", TestType.EMULATOR),
+            Check("Debugger", TestType.DEBUGGER),
+            Check("Root", TestType.ROOT)
+        )
 }

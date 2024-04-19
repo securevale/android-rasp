@@ -4,9 +4,11 @@ use jni::objects::{JClass, JObject, JString, JValue};
 use jni::sys::jstring;
 use jni::JNIEnv;
 
-use crate::build::get_build_config_value;
-use crate::{build, emulator, files, system};
+use crate::common::build::get_build_config_value;
+use crate::common::property::emulator_properties_found;
+use crate::{common::build, common::files, common::system};
 
+// TODO add info about root
 #[no_mangle]
 pub unsafe extern "C" fn Java_com_securevale_rasp_android_util_DeviceInfoKt_deviceInfo(
     mut env: JNIEnv,
@@ -58,7 +60,7 @@ pub unsafe extern "C" fn Java_com_securevale_rasp_android_util_DeviceInfoKt_exte
          Genymotion files: {}
          Emulator Pipes: {}
          Qemu Property ro.kernel.qemu: {}
-         Qemu Properties count: {}
+         Qemu Properties found: {}
         ",
         files::has_nox_files(),
         files::has_andy_files(),
@@ -68,7 +70,7 @@ pub unsafe extern "C" fn Java_com_securevale_rasp_android_util_DeviceInfoKt_exte
         files::has_genymotion_files(),
         files::has_pipes(),
         system::get_prop(&mut env, &"ro.kernel.qemu".to_string()) == "1",
-        emulator::properties::properties_count(&mut env),
+        emulator_properties_found(&mut env),
     );
 
     env.new_string(result)

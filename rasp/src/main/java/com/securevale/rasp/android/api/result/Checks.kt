@@ -34,3 +34,16 @@ enum class EmulatorChecks : CheckType {
     CPU,
     Modules
 }
+
+/**
+ * The enum containing all root checks.
+ */
+enum class RootChecks : CheckType {
+    RootCheck,
+    SuUser,
+    TestTags,
+    RootApps,
+    RootCloakingApps,
+    WritablePaths,
+    SuspiciousProperties
+}

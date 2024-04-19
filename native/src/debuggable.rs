@@ -1,6 +1,6 @@
 #![allow(non_snake_case)]
 
-use crate::util;
+use crate::common::util;
 use jni::objects::{JClass, JObject, JString, JValue};
 use jni::sys::jboolean;
 use jni::JNIEnv;

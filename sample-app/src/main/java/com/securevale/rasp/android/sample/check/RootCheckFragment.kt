@@ -5,17 +5,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.ImageView
-import android.widget.TextView
-import androidx.appcompat.content.res.AppCompatResources
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.securevale.rasp.android.api.SecureAppChecker
-import com.securevale.rasp.android.api.result.ExtendedResult
 import com.securevale.rasp.android.sample.R
 
-class EmulatorCheckFragment : Fragment() {
+class RootCheckFragment : Fragment() {
 
     private lateinit var checkResultsAdapter: CheckResultAdapter
 
@@ -36,10 +32,10 @@ class EmulatorCheckFragment : Fragment() {
         }
 
         view.findViewById<Button>(R.id.checkButton).apply {
-            text = "Emulator check"
+            text = "Root check"
 
             setOnClickListener {
-                val emulatorCheck = SecureAppChecker.Builder(requireContext(), checkEmulator = true)
+                val emulatorCheck = SecureAppChecker.Builder(requireContext(), checkRoot = true)
                     .build()
 
                 checkResultsAdapter.clearResults()
@@ -50,4 +46,5 @@ class EmulatorCheckFragment : Fragment() {
             }
         }
     }
+
 }

@@ -76,11 +76,13 @@ import com.securevale.rasp.android.api.SecureAppChecker
 
 val shouldCheckForEmulator = true
 val shouldCheckForDebugger = true
+val shouldCheckForRoot = true
 
 val builder = SecureAppChecker.Builder(
-    context,
-    checkEmulator = shouldCheckForEmulator,
-    checkDebugger = shouldCheckForDebugger
+  this,
+  checkEmulator = shouldCheckForEmulator,
+  checkDebugger = shouldCheckForDebugger,
+  checkRoot = shouldCheckForRoot
 )
 ```
 
@@ -95,6 +97,7 @@ val checkResult = check.check()
 when (checkResult) {
     is Result.EmulatorFound -> {} // app is most likely running on emulator
     is Result.DebuggerEnabled -> {} // app is in debug mode
+    is Result.Rooted -> {} // app is most likely rooted
     is Result.Secure -> {} // OK, no threats detected
 }
 ```
@@ -123,6 +126,7 @@ the `checkOnlyFor` parameter.
 ```kotlin
 import com.securevale.rasp.android.api.result.DebuggerChecks
 import com.securevale.rasp.android.api.result.EmulatorChecks
+import com.securevale.rasp.android.api.result.RootChecks
 
 val check = builder.build()
 check.subscribeVulnerabilitiesOnly(
@@ -133,7 +137,13 @@ check.subscribeVulnerabilitiesOnly(
     EmulatorChecks.Genymotion,
     EmulatorChecks.Nox,
     DebuggerChecks.Debuggable,
-    DebuggerChecks.DebugField
+    DebuggerChecks.DebugField,
+    RootChecks.SuUser,
+    RootChecks.TestTags,
+    RootChecks.RootApps,
+    RootChecks.RootCloakingApps,
+    RootChecks.WritablePaths,
+    RootChecks.SuspiciousProperties
   )
 ) {
   // examine result(s) here
@@ -181,6 +191,24 @@ techniques become more advanced, the emulator detection bypass tools are improvi
 never ending cat and mouse game, so there is no guarantee that all emulators will be correctly and
 accurately reported as such. The library shall be continuously updated with new emulator detection
 techniques with the aim of catching the emulators that slip through the existing checks.
+
+## Root Detection
+
+Includes:
+
+- Checks for superuser indicators;
+- Checks for test tags present on device;
+- Checks for rooting and root cloaking apps (still in progress);
+- Checks for paths that should not be writable;
+- Checks for suspicious properties;
+
+>[!IMPORTANT]
+> Since rooting is dynamic domain, checks associated with it must continuously evolve. It's important to understand that these checks are not exhaustive, and
+> should be expected to undergo continuous improvement.
+
+
+> [!NOTE]
+> Although some basics checks for Magisk are already applied, "real" Magisk detection is expected to be implemented in future releases.
 
 ## ProGuard
 

@@ -7,14 +7,11 @@ extern crate android_logger;
 use jni::objects::JClass;
 use jni::JNIEnv;
 
-mod build;
 mod debuggable;
 mod emulator;
-mod files;
-mod info;
-mod logging;
-mod system;
-mod util;
+
+mod common;
+mod root;
 
 const EXTENDED_LOGGING: bool = false;
 
@@ -24,5 +21,5 @@ pub unsafe extern "C" fn Java_com_securevale_rasp_android_native_SecureApp_initJ
     _env: JNIEnv,
     _class: JClass,
 ) {
-    logging::init_logger();
+    common::logging::init_logger();
 }

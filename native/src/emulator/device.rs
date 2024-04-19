@@ -2,7 +2,7 @@ use jni::objects::{JClass, JObject, JString};
 use jni::sys::jboolean;
 use jni::JNIEnv;
 
-use crate::system;
+use crate::common::system;
 
 // isRadioVersionSuspicious
 #[no_mangle]

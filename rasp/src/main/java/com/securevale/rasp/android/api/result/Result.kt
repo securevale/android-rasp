@@ -6,6 +6,7 @@ package com.securevale.rasp.android.api.result
 sealed class Result {
     data object EmulatorFound : Result()
     data object DebuggerEnabled : Result()
+    data object Rooted : Result()
     data object Secure : Result()
 }
 

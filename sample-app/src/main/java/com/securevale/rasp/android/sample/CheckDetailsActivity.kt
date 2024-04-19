@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.securevale.rasp.android.sample.check.DebuggerCheckFragment
 import com.securevale.rasp.android.sample.check.EmulatorCheckFragment
+import com.securevale.rasp.android.sample.check.RootCheckFragment
 
 class CheckDetailsActivity : AppCompatActivity() {
 
@@ -34,6 +35,7 @@ class CheckDetailsActivity : AppCompatActivity() {
     private fun getCheckFragment(type: TestType): Fragment = when (type) {
         TestType.EMULATOR -> EmulatorCheckFragment()
         TestType.DEBUGGER -> DebuggerCheckFragment()
+        TestType.ROOT -> RootCheckFragment()
     }
 
     @Suppress("OVERRIDE_DEPRECATION")
@@ -55,4 +57,4 @@ class CheckDetailsActivity : AppCompatActivity() {
     }
 }
 
-enum class TestType { EMULATOR, DEBUGGER }
+enum class TestType { EMULATOR, DEBUGGER, ROOT }

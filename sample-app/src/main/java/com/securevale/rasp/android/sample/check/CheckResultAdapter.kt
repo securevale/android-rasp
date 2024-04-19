@@ -22,6 +22,10 @@ class CheckResultAdapter : RecyclerView.Adapter<CheckResultAdapter.ViewHolder>()
         holder.bind(items[position])
     }
 
+    fun clearResults(){
+        items.clear()
+    }
+
     fun updateItems(extendedResult: ExtendedResult) {
         items.add(extendedResult)
         notifyDataSetChanged()

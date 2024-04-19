@@ -7,19 +7,23 @@ import com.securevale.rasp.android.api.result.DebuggerChecks
 import com.securevale.rasp.android.api.result.EmulatorChecks
 import com.securevale.rasp.android.api.result.ExtendedResult
 import com.securevale.rasp.android.api.result.Result
+import com.securevale.rasp.android.api.result.RootChecks
 import com.securevale.rasp.android.debugger.DebuggerCheck
 import com.securevale.rasp.android.emulator.EmulatorCheck
+import com.securevale.rasp.android.root.RootCheck
 
 /**
  * Class that acts as a mediator between the public's API of the library and its internals.
  * @param context the Context used for checks configuration.
  * @param emulator whether emulator checks should be triggered.
  * @param debugger whether checks for debug should be triggered.
+ * @param root whether checks for root should be triggered.
  */
 class ChecksMediator(
     context: Context,
     emulator: Boolean,
-    debugger: Boolean
+    debugger: Boolean,
+    root: Boolean
 ) {
 
     /**
@@ -32,9 +36,15 @@ class ChecksMediator(
      */
     private var debugCheck: DebuggerCheck? = null
 
+    /**
+     * The root check instance.
+     */
+    private var rootCheck: RootCheck? = null
+
     init {
         if (emulator) emulatorCheck = EmulatorCheck(context)
         if (debugger) debugCheck = DebuggerCheck(context)
+        if (root) rootCheck = RootCheck(context)
     }
 
     /**
@@ -51,6 +61,7 @@ class ChecksMediator(
         val internalSubscriber = getSubscriber(vulnerabilitiesOnly, subscriber)
         emulatorCheck?.check(checkOnlyFor, true, internalSubscriber)
         debugCheck?.check(checkOnlyFor, true, internalSubscriber)
+        rootCheck?.check(checkOnlyFor, true, internalSubscriber)
     }
 
     /**
@@ -81,6 +92,14 @@ class ChecksMediator(
                 debugger?.vulnerabilityFound() ?: false
             )
         )
+
+        val root = rootCheck?.check(checkOnlyFor)
+        internalSubscriber.onCheck(
+            ExtendedResult(
+                RootChecks.RootCheck,
+                root?.vulnerabilityFound() ?: false
+            )
+        )
     }
 
     /**
@@ -94,6 +113,9 @@ class ChecksMediator(
         debugCheck?.check()?.vulnerabilityFound()
             ?: false -> Result.DebuggerEnabled
 
+        rootCheck?.check()?.vulnerabilityFound()
+            ?: false -> Result.Rooted
+
         else -> Result.Secure
     }
 
@@ -104,13 +126,11 @@ class ChecksMediator(
      * @return the wrapped subscriber.
      */
     private fun getSubscriber(vulnerabilitiesOnly: Boolean, externalSubscriber: CheckSubscriber) =
-        object : CheckSubscriber {
-            override fun onCheck(result: ExtendedResult) {
-                if (vulnerabilitiesOnly) {
-                    if (result.vulnerable) externalSubscriber.onCheck(result)
-                } else {
-                    externalSubscriber.onCheck(result)
-                }
+        CheckSubscriber { result ->
+            if (vulnerabilitiesOnly) {
+                if (result.vulnerable) externalSubscriber.onCheck(result)
+            } else {
+                externalSubscriber.onCheck(result)
             }
         }
 }

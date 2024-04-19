@@ -1,7 +1,7 @@
 use std::collections::HashMap;
 use std::sync::Mutex;
 
-use crate::util;
+use crate::common::util;
 use jni::errors::Error;
 use jni::objects::{JObject, JString, JValue};
 use jni::JNIEnv;
@@ -50,10 +50,7 @@ pub fn get_prop(env: &mut JNIEnv, property_name: &String) -> String {
 }
 
 fn flatten_result(result: Option<String>) -> String {
-    match result {
-        Some(value) => value,
-        None => "".to_string(),
-    }
+    result.unwrap_or_default()
 }
 
 fn try_with_system_out(env: &mut JNIEnv, property_name: &String) -> Option<String> {

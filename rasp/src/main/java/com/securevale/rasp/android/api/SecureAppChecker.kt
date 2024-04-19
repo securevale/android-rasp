@@ -70,11 +70,13 @@ class SecureAppChecker private constructor() {
      * @property context the Context used for configuring checks.
      * @property checkEmulator whether emulator checks should be triggered.
      * @property checkDebugger whether checks for debug should be triggered.
+     * @property checkRoot whether checks for root should be triggered.
      */
     class Builder(
         private val context: Context,
         private val checkEmulator: Boolean = false,
-        private val checkDebugger: Boolean = false
+        private val checkDebugger: Boolean = false,
+        private val checkRoot: Boolean = false
     ) {
 
         /**
@@ -90,7 +92,7 @@ class SecureAppChecker private constructor() {
          * @return the configured [SecureAppChecker] instance.
          */
         fun build() = SecureAppChecker().apply {
-            mediator = ChecksMediator(context, checkEmulator, checkDebugger)
+            mediator = ChecksMediator(context, checkEmulator, checkDebugger, checkRoot)
         }
     }
 }
