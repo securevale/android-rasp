@@ -192,23 +192,22 @@ never ending cat and mouse game, so there is no guarantee that all emulators wil
 accurately reported as such. The library shall be continuously updated with new emulator detection
 techniques with the aim of catching the emulators that slip through the existing checks.
 
-## Root Detection
+### Root Detection
 
 Includes:
 
 - Checks for superuser indicators;
 - Checks for test tags present on device;
-- Checks for rooting and root cloaking apps (still in progress);
+- Checks for rooting and root cloaking apps (currently in beta);
 - Checks for paths that should not be writable;
 - Checks for suspicious properties;
 
 >[!IMPORTANT]
-> Since rooting is dynamic domain, checks associated with it must continuously evolve. It's important to understand that these checks are not exhaustive, and
+> Rooting is an ever-evolving domain and so are the root detection techniques. For this reason it is important to understand that the above checks are not exhaustive and
 > should be expected to undergo continuous improvement.
 
-
 > [!NOTE]
-> Although some basics checks for Magisk are already applied, "real" Magisk detection is expected to be implemented in future releases.
+> Although some basics checks for Magisk are already in place, a comprehensive Magisk detection is expected to be implemented in future releases.
 
 ## ProGuard
 
