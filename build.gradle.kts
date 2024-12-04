@@ -9,8 +9,8 @@ plugins {
     id("com.vanniktech.maven.publish") version "0.25.2"
 }
 
-val versionCode by extra { 6 }
-val versionName by extra { "0.6.0" }
+val versionCode by extra { 7 }
+val versionName by extra { "0.6.3" }
 val minSdkVersion by extra { 24 }
 val compileSdkVersion by extra { 34 }
 val targetSdkVersion by extra { 34 }

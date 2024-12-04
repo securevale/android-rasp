@@ -1,7 +1,7 @@
 package com.securevale.rasp.android.sample
 
 import android.app.Application
-import com.securevale.rasp.android.native.SecureApp
+import com.securevale.rasp.android.SecureApp
 
 class SampleApplication : Application() {
 

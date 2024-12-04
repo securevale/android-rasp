@@ -1,4 +1,4 @@
-package com.securevale.rasp.android.native
+package com.securevale.rasp.android
 
 /**
  * Library initalisation object.

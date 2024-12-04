@@ -57,7 +57,7 @@ expected to be called only once per app's lifecycle, so the best place for doing
 of your app's `Application` class.
 
 ```kotlin
-import com.securevale.rasp.android.native.SecureApp
+import com.securevale.rasp.android.SecureApp
 
 class SampleApplication : Application() {
 

@@ -24,7 +24,7 @@ android {
     buildTypes {
         getByName("release") {
             isMinifyEnabled = false
-            consumerProguardFiles( "consumer-rules.pro")
+            consumerProguardFiles("consumer-rules.pro")
         }
 
         getByName("debug") {
@@ -93,12 +93,13 @@ fun configureDokka(dokkaTask: DokkaTask, outputDir: String) = dokkaTask.apply {
 }
 
 mavenPublishing {
+
     group = "com.securevale.rasp"
-    version = "0.6.0"
-    coordinates("com.securevale", "rasp-android", "0.6.0")
+    version = rootProject.extra["versionName"] as String
+    coordinates("com.securevale", "rasp-android", rootProject.extra["versionName"] as String)
 
     publishToMavenCentral(SonatypeHost.S01, true)
-    signAllPublications()
+//    signAllPublications()
 
     pom {
         name.set("Android RASP")
