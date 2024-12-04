@@ -11,7 +11,7 @@ pub struct Property<'a> {
     pub suspicious_value: Option<&'a str>,
 }
 
-impl<'a> Property<'a> {
+impl Property<'_> {
     pub fn looks_suspicious(&self, found_value: Option<&str>) -> bool {
         found_value == self.suspicious_value
     }
