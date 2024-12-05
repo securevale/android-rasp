@@ -19,7 +19,8 @@ import com.securevale.rasp.android.root.RootCheck
  * @param debugger whether checks for debug should be triggered.
  * @param root whether checks for root should be triggered.
  */
-class ChecksMediator(
+@PublishedApi
+internal class ChecksMediator(
     context: Context,
     emulator: Boolean,
     debugger: Boolean,

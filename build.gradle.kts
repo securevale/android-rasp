@@ -11,7 +11,7 @@ plugins {
 }
 
 val versionCode by extra { 7 }
-val versionName by extra { "0.6.3" }
+val versionName by extra { "0.6.4" }
 val minSdkVersion by extra { 24 }
 val compileSdkVersion by extra { 34 }
 val targetSdkVersion by extra { 34 }

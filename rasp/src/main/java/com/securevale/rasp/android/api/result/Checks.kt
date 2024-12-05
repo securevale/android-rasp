@@ -9,7 +9,9 @@ interface CheckType
  * The enum containing all debugger checks.
  */
 enum class DebuggerChecks : CheckType {
-    DebuggerCheck, Debuggable, DebugField, DebuggerConnected
+    DebuggerCheck, Debuggable, DebugField, DebuggerConnected;
+
+    override fun toString(): String = "Debugger: $name"
 }
 
 /**
@@ -32,7 +34,9 @@ enum class EmulatorChecks : CheckType {
     SuspiciousProperties,
     Mounts,
     CPU,
-    Modules
+    Modules;
+
+    override fun toString(): String = "Emulator: $name"
 }
 
 /**
@@ -45,5 +49,7 @@ enum class RootChecks : CheckType {
     RootApps,
     RootCloakingApps,
     WritablePaths,
-    SuspiciousProperties
+    SuspiciousProperties;
+
+    override fun toString(): String = "Root: $name"
 }
