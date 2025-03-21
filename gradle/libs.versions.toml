@@ -1,13 +1,13 @@
 [versions]
 appcompat = "1.7.0"
-constraintLayout = "2.2.0"
-coreKtx = "1.10.1" # can be upgraded when target SDK 35
+constraintLayout = "2.2.1"
+coreKtx = "1.15.0" # can be upgraded when target SDK 35
 leakCanary = "2.9.1"
 material = "1.12.0"
 
 # plugins
-androidGradlePlugin = "8.5.2"
-androidLibraryPlugin = "8.5.2"
+androidGradlePlugin = "8.9.0"
+androidLibraryPlugin = "8.9.0"
 detektPlugin = "1.23.0"
 dokkaPlugin = "1.8.20"
 kotlinAndroidPlugin = "1.9.0"
