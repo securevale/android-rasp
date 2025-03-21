@@ -1,5 +1,5 @@
-use jni::JNIEnv;
 use jni::objects::{JObject, JValue};
+use jni::JNIEnv;
 
 use crate::common::util;
 
@@ -23,9 +23,9 @@ fn is_package_suspicious(env: &mut JNIEnv, context: &JObject, suspicious_package
             "()Landroid/content/pm/PackageManager;",
             &[],
         )
-            .unwrap(),
+        .unwrap(),
     )
-        .unwrap();
+    .unwrap();
 
     let mut result = false;
 

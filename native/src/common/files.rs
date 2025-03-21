@@ -51,25 +51,27 @@ pub fn has_busybox_files() -> bool {
 
 fn check_files_present(suspicious_file_paths: &[&str]) -> bool {
     let mut check_result = false;
-    for file_path in suspicious_file_paths.iter() {
-        match Path::new(file_path).try_exists() {
-            Ok(result) => {
-                if result {
-                    check_result = true;
-                    break;
-                }
-            }
-            Err(err) => {
-                #[cfg(debug_assertions)]
-                log_android(
-                    Error,
-                    format!("Failed to check if file exists: {}", err).as_str(),
-                );
-            }
-        }
-    }
+    // for file_path in suspicious_file_paths.iter() {
+    //     match Path::new(file_path).try_exists() {
+    //         Ok(result) => {
+    //             if result {
+    //                 check_result = true;
+    //                 break;
+    //             }
+    //         }
+    //         Err(err) => {
+    //             #[cfg(debug_assertions)]
+    //             log_android(
+    //                 Error,
+    //                 format!("Failed to check if file exists: {}", err).as_str(),
+    //             );
+    //         }
+    //     }
+    // }
 
-    check_result
+    suspicious_file_paths
+        .iter()
+        .any(|&file_path| Path::new(file_path).exists())
 }
 
 pub fn find_in_file(file_path: &str, search_phrases: &[&str]) -> Result<bool, io::Error> {
