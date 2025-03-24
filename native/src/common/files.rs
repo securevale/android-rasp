@@ -1,10 +1,8 @@
+use log::LevelFilter::Debug;
 use std::fs::File;
 use std::io;
 use std::io::{BufRead, BufReader};
 use std::path::Path;
-
-#[cfg(debug_assertions)]
-use log::LevelFilter::Error;
 
 #[cfg(debug_assertions)]
 use crate::common::logging::log_android;
@@ -45,30 +43,48 @@ pub fn has_su_files() -> bool {
     check_files_present(&SU_FILES)
 }
 
+pub fn has_dynamic_su_files(dynamic_paths: &[&str]) -> bool {
+    let mut paths = Vec::new();
+
+    for item in dynamic_paths.iter() {
+        if !item.ends_with("/") {
+            paths.push(format!("{}/su", item));
+        } else {
+            paths.push(format!("{}su", item));
+        }
+    }
+
+    #[cfg(debug_assertions)]
+    log_android(Debug, format!("SU PATHS: {:?}", paths.as_slice()).as_str());
+
+    paths.iter().any(|file_path| Path::new(&file_path).exists())
+}
+
+pub fn has_dynamic_busybox_files(dynamic_paths: &[&str]) -> bool {
+    let mut paths = Vec::new();
+
+    for item in dynamic_paths.iter() {
+        if !item.ends_with("/") {
+            paths.push(format!("{}/busybox", item));
+        } else {
+            paths.push(format!("{}busybox", item));
+        }
+    }
+
+    #[cfg(debug_assertions)]
+    log_android(
+        Debug,
+        format!("BUSYBOX PATHS: {:?}", paths.as_slice()).as_str(),
+    );
+
+    paths.iter().any(|file_path| Path::new(&file_path).exists())
+}
+
 pub fn has_busybox_files() -> bool {
     check_files_present(&BUSYBOX_FILES)
 }
 
 fn check_files_present(suspicious_file_paths: &[&str]) -> bool {
-    let mut check_result = false;
-    // for file_path in suspicious_file_paths.iter() {
-    //     match Path::new(file_path).try_exists() {
-    //         Ok(result) => {
-    //             if result {
-    //                 check_result = true;
-    //                 break;
-    //             }
-    //         }
-    //         Err(err) => {
-    //             #[cfg(debug_assertions)]
-    //             log_android(
-    //                 Error,
-    //                 format!("Failed to check if file exists: {}", err).as_str(),
-    //             );
-    //         }
-    //     }
-    // }
-
     suspicious_file_paths
         .iter()
         .any(|&file_path| Path::new(file_path).exists())

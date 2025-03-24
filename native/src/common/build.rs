@@ -11,12 +11,11 @@ pub fn get_build_config_value(env: &mut JNIEnv, key: &str) -> String {
     .unwrap();
 
     unsafe {
-        return env
-            .get_string_unchecked(&JString::from(field))
+        env.get_string_unchecked(&JString::from(field))
             .unwrap()
             .to_str()
             .unwrap()
-            .to_string();
+            .to_string()
     }
 }
 

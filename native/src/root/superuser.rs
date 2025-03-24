@@ -7,7 +7,10 @@ use jni::JNIEnv;
 use log::LevelFilter::Debug;
 
 use crate::common::build::get_build_config_value;
-use crate::common::files::{has_busybox_files, has_su_files, NON_WRITABLE_PATHS};
+use crate::common::files::{
+    has_busybox_files, has_dynamic_busybox_files, has_dynamic_su_files, has_su_files,
+    NON_WRITABLE_PATHS,
+};
 #[cfg(debug_assertions)]
 use crate::common::logging::log_android;
 use crate::{common::build, common::util};
@@ -21,6 +24,31 @@ pub unsafe extern "C" fn Java_com_securevale_rasp_android_root_checks_DeviceChec
     let has_su_files = has_su_files();
 
     let has_busybox_files = has_busybox_files();
+
+    let system_clz = env.find_class("java/lang/System").unwrap();
+
+    let paths_exec = JObject::try_from(
+        env.call_static_method(
+            system_clz,
+            "getenv",
+            "(Ljava/lang/String;)Ljava/lang/String;",
+            &[JValue::Object(&JObject::from(
+                env.new_string("PATH").unwrap(),
+            ))],
+        )
+        .unwrap(),
+    )
+    .unwrap();
+
+    let jstring = JString::from(paths_exec);
+    let binding = env.get_string_unchecked(&jstring).unwrap();
+
+    let paths = binding.to_str().unwrap();
+
+    let hasSuPaths2 = has_dynamic_su_files(paths.split(":").collect::<Vec<&str>>().as_slice());
+
+    let hasBusyBoxFiles2 =
+        has_dynamic_busybox_files(paths.split(":").collect::<Vec<&str>>().as_slice());
 
     let runtime_clz = env.find_class("java/lang/Runtime").unwrap();
 
@@ -45,7 +73,7 @@ pub unsafe extern "C" fn Java_com_securevale_rasp_android_root_checks_DeviceChec
         util::ignore_error(&mut env);
     }
 
-    let result = has_su_files || isSu || has_busybox_files;
+    let result = hasSuPaths2 || has_su_files || isSu || has_busybox_files || hasBusyBoxFiles2;
 
     u8::from(result)
 }
