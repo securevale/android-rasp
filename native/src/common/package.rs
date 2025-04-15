@@ -54,14 +54,13 @@ fn is_package_suspicious(env: &mut JNIEnv, context: &JObject, suspicious_package
 /**
  * Suspicious emulator packages.
  */
-const SUSPICIOUS_EMULATOR_PACKAGES: [&str; 10] = [
+const SUSPICIOUS_EMULATOR_PACKAGES: [&str; 9] = [
     "com.google.android.launcher.layouts.genymotion",
     "com.bluestacks",
     "com.vphone.launcher",
     "com.bluestacks.appmart",
     "com.bignox",
     "com.bignox.app",
-    "com.google.android.launcher.layouts.genymotion",
     "com.microvirt.tools",
     "com.microvirt.download",
     "com.mumu.store",

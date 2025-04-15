@@ -17,3 +17,4 @@ dependencyResolutionManagement {
 rootProject.name = "android-rasp"
 include(":sample-app")
 include(":rasp")
+include(":packages")

@@ -41,6 +41,7 @@ android {
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_17.toString()
     }
+
     namespace = "com.securevale.rasp.android"
 
     lint {
