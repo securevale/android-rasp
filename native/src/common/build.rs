@@ -31,3 +31,5 @@ pub const FINGERPRINT: &str = "FINGERPRINT";
 pub const PRODUCT: &str = "PRODUCT";
 pub const TAGS: &str = "TAGS";
 pub const HOST: &str = "HOST";
+
+pub const TYPE: &str = "TYPE";

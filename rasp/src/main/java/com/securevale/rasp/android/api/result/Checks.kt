@@ -27,6 +27,7 @@ enum class EmulatorChecks : CheckType {
     GoogleEmulator,
     Fingerprint,
     SuspiciousFiles,
+    Bluestacks,
     Sensors,
     OperatorName,
     RadioVersion,

@@ -47,6 +47,14 @@ internal object GeneralChecks {
     @JvmName("e")
     external fun hasSuspiciousFiles(): Boolean
 
+
+    /**
+     * Checks if it is Bluestacks device.
+     * @return result of the check.
+     */
+    @JvmName("l")
+    external fun isBluestacks(): Boolean
+
     /**
      * Checks for suspicious fingerprint build field.
      * @return result of the check.

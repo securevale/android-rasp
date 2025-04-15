@@ -206,7 +206,7 @@ const NOX_FILES: [&str; 12] = [
 ];
 
 /// Pipes indicate that it is a BlueStacks emulator.
-const BLUE_STACKS_FILES: [&str; 15] = [
+const BLUE_STACKS_FILES: [&str; 33] = [
     "/Android/data/com.bluestacks.home",
     "/Android/data/com.bluestacks.settings",
     "/system/priv-app/com.bluestacks.bstfolder.apk",
@@ -214,7 +214,24 @@ const BLUE_STACKS_FILES: [&str; 15] = [
     "/data/data/com.bluestacks.bstfolder",
     "/data/data/com.bluestacks.appmart",
     "/data/data/com.bluestacks.home",
+    "/data/data/com.androVM.vmconfig",
+    "/data/data/com.bluestacks.accelerometerui",
+    "/data/data/com.bluestacks.appfinder",
+    "/data/data/com.bluestacks.appsettings",
+    "/data/data/com.bluestacks.BstCommandProcessor",
+    "/data/data/com.bluestacks.help",
+    "/data/data/com.bluestacks.s2p",
+    "/data/data/com.bluestacks.searchapp",
+    "/data/data/com.bluestacks/settings",
+    "/data/data/com.bluestacks.setup",
+    "/data/data/com.bluestacks.spotlight",
     "/data/data/com.bluestacks.launcher",
+    "/data/app/com.bluestacks.appmart-1.apk",
+    "/data/app/com.bluestacks.BstCommandProcessor-1.apk",
+    "/data/app/com.bluestacks.help-1.apk",
+    "/data/app/com.bluestacks.home-1.apk",
+    "/data/app/com.bluestacks.s2p-1.apk",
+    "/data/app/com.bluestacks.searchapp-1.apk",
     "/system/bin/bstfolder",
     "/system/bin/bstfolderd",
     "/system/bin/bstsyncfs",
@@ -222,6 +239,7 @@ const BLUE_STACKS_FILES: [&str; 15] = [
     "/sys/module/bstpgaipc",
     "/system/xbin/bstk/su",
     "/system/xbin/bstk",
+    "/mnt/prebundledapps/bluestacks.prop.orig",
 ];
 
 /// Pipes indicate that it is a Phoenix emulator.

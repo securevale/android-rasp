@@ -15,6 +15,7 @@ import com.securevale.rasp.android.emulator.checks.GeneralChecks.cpuSuspicious
 import com.securevale.rasp.android.emulator.checks.GeneralChecks.hasSuspiciousFiles
 import com.securevale.rasp.android.emulator.checks.GeneralChecks.isAvdDevice
 import com.securevale.rasp.android.emulator.checks.GeneralChecks.isAvdHardware
+import com.securevale.rasp.android.emulator.checks.GeneralChecks.isBluestacks
 import com.securevale.rasp.android.emulator.checks.GeneralChecks.isFingerprintFromEmulator
 import com.securevale.rasp.android.emulator.checks.GeneralChecks.isGenymotion
 import com.securevale.rasp.android.emulator.checks.GeneralChecks.isGoogleEmulator
@@ -49,6 +50,7 @@ internal class EmulatorCheck(
         Memu to ::checkMemu,
         Fingerprint to ::checkFingerprint,
         SuspiciousFiles to ::checkFiles,
+        Bluestacks to ::checkBluestacks,
         GoogleEmulator to ::checkEmulatorGoogle,
         Sensors to ::checkSensors,
         OperatorName to ::checkOperatorName,
@@ -127,6 +129,12 @@ internal class EmulatorCheck(
      * Checks whether there are any suspicious files were found.
      */
     private fun checkFiles() = wrappedCheck(5, SuspiciousFiles) { hasSuspiciousFiles() }
+
+
+    /**
+     * Checks whether Bluestacks emulator indicators were found.
+     */
+    private fun checkBluestacks() = wrappedCheck(7, Bluestacks) { isBluestacks() }
 
     /**
      * Checks whether any of the sensors looks suspicious.

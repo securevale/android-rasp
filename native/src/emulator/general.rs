@@ -98,18 +98,22 @@ pub unsafe extern "C" fn Java_com_securevale_rasp_android_emulator_checks_Genera
     _class: JClass,
 ) -> jboolean {
     let has_andy_files = common::files::has_andy_files();
-    let has_blue_files = common::files::has_bluestack_files();
     let has_x_86_files = common::files::has_x86_files();
     let has_emulator_files = common::files::has_emu_files();
     let has_phoenix_files = common::files::has_phoenix_files();
 
-    let result = has_andy_files
-        || has_blue_files
-        || has_x_86_files
-        || has_emulator_files
-        || has_phoenix_files;
+    let result = has_andy_files || has_x_86_files || has_emulator_files || has_phoenix_files;
 
     u8::from(result)
+}
+
+// isBluestacks
+#[no_mangle]
+pub unsafe extern "C" fn Java_com_securevale_rasp_android_emulator_checks_GeneralChecks_l(
+    _env: JNIEnv,
+    _class: JClass,
+) -> jboolean {
+    u8::from(common::files::has_bluestack_files())
 }
 
 // isFingerprintFromEmulator
