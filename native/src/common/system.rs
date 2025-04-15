@@ -29,8 +29,6 @@ static FAILED_ATTEMPTS_MAP: Lazy<Mutex<HashMap<String, PropertiesAccessStatus>>>
         Mutex::new(map)
     });
 
-// Due to hidden API restrictions exposed from Android P reflection approach is considered as no-go.
-// TODO: Restrictions needs to be bypassed first, this action item will be addressed in 0.7.0 release.
 pub fn get_prop(env: &mut JNIEnv, property_name: &String) -> String {
     if let Some(property) = FAILED_ATTEMPTS_MAP
         .lock()
