@@ -83,7 +83,7 @@ internal abstract class ProbabilityCheck : DefaultCheck {
         checks = collectChecks(checksToTrigger)
         return if (granular) {
             checkNotNull(subscriber) { "Subscriber must be set when want to use granular checks" }
-            checks.fireGranular(subscriber)
+            checks.fireGranular(subscriber, threshold)
             CheckResult.Ignored
         } else {
             if (checks.fireChecks(threshold)) CheckResult.Vulnerable else CheckResult.Secure

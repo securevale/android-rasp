@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -40,8 +41,15 @@ class DebuggerCheckFragment : Fragment() {
 
                 checkResultsAdapter.clearResults()
 
-                emulatorCheck.subscribe(granular = true) {
-                    checkResultsAdapter.updateItems(it)
+                emulatorCheck.subscribe(granular = true) { result ->
+                    setBackgroundColor(
+                        ContextCompat.getColor(
+                            requireContext(),
+                            if (result.thresholdExceeded) R.color.red else R.color.green
+                        )
+                    )
+
+                    checkResultsAdapter.updateItems(result)
                 }
             }
         }

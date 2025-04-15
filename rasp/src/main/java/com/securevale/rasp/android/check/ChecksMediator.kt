@@ -82,6 +82,7 @@ internal class ChecksMediator(
         internalSubscriber.onCheck(
             ExtendedResult(
                 EmulatorChecks.EmulatorCheck,
+                emulator?.vulnerabilityFound() ?: false,
                 emulator?.vulnerabilityFound() ?: false
             )
         )
@@ -90,6 +91,7 @@ internal class ChecksMediator(
         internalSubscriber.onCheck(
             ExtendedResult(
                 DebuggerChecks.DebuggerCheck,
+                debugger?.vulnerabilityFound() ?: false,
                 debugger?.vulnerabilityFound() ?: false
             )
         )
@@ -98,6 +100,7 @@ internal class ChecksMediator(
         internalSubscriber.onCheck(
             ExtendedResult(
                 RootChecks.RootCheck,
+                root?.vulnerabilityFound() ?: false,
                 root?.vulnerabilityFound() ?: false
             )
         )

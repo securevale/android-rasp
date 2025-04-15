@@ -13,4 +13,8 @@ sealed class Result {
 /**
  * The extended result class which contains [CheckType] alongside with its result.
  */
-data class ExtendedResult(val checkType: CheckType, val vulnerable: Boolean)
+data class ExtendedResult(
+    val checkType: CheckType,
+    val vulnerable: Boolean,
+    val thresholdExceeded: Boolean
+)

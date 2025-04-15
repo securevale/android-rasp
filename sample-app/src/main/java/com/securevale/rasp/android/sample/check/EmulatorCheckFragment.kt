@@ -5,14 +5,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.ImageView
-import android.widget.TextView
-import androidx.appcompat.content.res.AppCompatResources
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.securevale.rasp.android.api.SecureAppChecker
-import com.securevale.rasp.android.api.result.ExtendedResult
 import com.securevale.rasp.android.sample.R
 
 class EmulatorCheckFragment : Fragment() {
@@ -44,8 +41,14 @@ class EmulatorCheckFragment : Fragment() {
 
                 checkResultsAdapter.clearResults()
 
-                emulatorCheck.subscribe(granular = true) {
-                    checkResultsAdapter.updateItems(it)
+                emulatorCheck.subscribe(granular = true) { result ->
+                    setBackgroundColor(
+                        ContextCompat.getColor(
+                            requireContext(),
+                            if (result.thresholdExceeded) R.color.red else R.color.green
+                        )
+                    )
+                    checkResultsAdapter.updateItems(result)
                 }
             }
         }

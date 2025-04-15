@@ -22,13 +22,13 @@ fun List<() -> WrappedCheckResult>.fireChecks(threshold: Int): Boolean {
         .none()
 }
 
-fun List<() -> WrappedCheckResult>.fireGranular(subscriber: CheckSubscriber) {
+fun List<() -> WrappedCheckResult>.fireGranular(subscriber: CheckSubscriber, threshold: Int) {
     var sum = 0
     asSequence()
         .map { it() }
         .forEach {
             sum += it.first
-            subscriber.onCheck(ExtendedResult(it.second, it.first > 0))
+            subscriber.onCheck(ExtendedResult(it.second, it.first > 0, sum > threshold))
             SecureAppLogger.logDebug("Current threshold is $sum")
         }
 }
