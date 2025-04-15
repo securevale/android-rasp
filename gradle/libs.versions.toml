@@ -12,7 +12,7 @@ detektPlugin = "1.23.0"
 dokkaPlugin = "1.8.20"
 kotlinAndroidPlugin = "1.9.0"
 kotlinJvmPlugin = "1.9.0"
-mavenPublishPlugin = "0.25.2"
+mavenPublishPlugin = "0.25.3"
 
 [libraries]
 androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "appcompat" }

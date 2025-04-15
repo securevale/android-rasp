@@ -222,6 +222,35 @@ for this check to return correct results, add the following line to your ProGuar
 Alternatively, you can opt out from this check by excluding `DebugField` from an array of checks passed to 
 `checkOnlyFor` parameter.
 
+
+## Package visibility changes Android 11+
+
+Android 11 introduced [changes related to package visibility](https://developer.android.com/about/versions/11/privacy/package-visibility). Android RASP contains several checks which
+utilize knowledge about suspicious packages installed on a device. This checks might not work when run on a device running
+on Android 11+, it will not crash the app but will not be able to properly check for suspicious packages occurrence thus
+reporting device being safe while it might not be.
+
+The library is checking for [packages defined here](https://github.com/securevale/android-rasp/blob/master/native/src/common/package.rs).
+
+In order to address this changes and make sure that library is able to check all suspicious packages the additional,
+optional library with the manifest was added with manifest which defines all of packages Android RASP is asking as
+a queryable.
+
+```groovy
+dependencies {
+    implementation 'com.securevale:rasp-packages:{version}'
+}
+```
+
+> [!NOTE]
+> You are adding it an your own risk as Google's privacy policies are constantly changing and it's not guaranteed that requesting such a wide list of queryable packages
+> won't result in app being pulled off/rejected from the Google Play Store.
+
+> [!NOTE]
+> Although package checks might not work perfectly, Android RASP performs many other security checks.
+> So even without using the optional `rasp-packages` library, you can still expect the main library to
+> fulfill its security assessment promises.
+
 ## Sample app
 
 Sample allows you to test checks. To run it you need to clone the project and build and run "sample-app" 
