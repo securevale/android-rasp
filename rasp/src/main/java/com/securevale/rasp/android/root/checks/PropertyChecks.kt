@@ -11,4 +11,10 @@ internal object PropertyChecks {
      */
     @JvmName("y")
     external fun hasRootProperties(): Boolean
+
+    /**
+     * Checks whether is 'eng' build.
+     */
+    @JvmName("g")
+    external fun isEngBuild(): Boolean
 }

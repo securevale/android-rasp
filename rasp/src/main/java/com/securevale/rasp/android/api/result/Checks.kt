@@ -48,6 +48,7 @@ enum class RootChecks : CheckType {
     SuUser,
     TestTags,
     RootApps,
+    EngBuild,
     RootCloakingApps,
     WritablePaths,
     SuspiciousProperties;
