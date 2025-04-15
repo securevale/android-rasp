@@ -3,11 +3,11 @@ import org.jetbrains.dokka.DokkaConfiguration.Visibility
 import org.jetbrains.dokka.gradle.DokkaTask
 
 plugins {
-    id("com.android.library")
-    id("org.jetbrains.kotlin.android")
-    id("io.gitlab.arturbosch.detekt")
-    id("org.jetbrains.dokka")
-    id("com.vanniktech.maven.publish")
+    alias(libs.plugins.android.library)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.detekt)
+    alias(libs.plugins.dokka)
+    alias(libs.plugins.maven.publish)
 }
 
 android {
