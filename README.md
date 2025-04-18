@@ -1,10 +1,10 @@
 # Android RASP
 
 [![CI](https://github.com/securevale/android-rasp/actions/workflows/ci.yml/badge.svg)](https://github.com/securevale/android-rasp/actions/workflows/ci.yml)
-[![Kotlin](https://img.shields.io/badge/kotlin-1.8.20-blue)](https://kotlinlang.org/docs/whatsnew1820.html)
+[![Kotlin](https://img.shields.io/badge/kotlin-1.9.0-blue)](https://kotlinlang.org/docs/whatsnew19.html)
 [![Android](https://img.shields.io/badge/minAndroidSDK-24-brightgreen)](https://developer.android.com/about/versions/nougat)
-[![Android](https://img.shields.io/badge/targetAndroidSDK-34-brightgreen)](https://developer.android.com/about/versions/14)
-[![Gradle](https://img.shields.io/badge/gradle-8.2.0-green)](https://docs.gradle.org/8.2/release-notes.html)
+[![Android](https://img.shields.io/badge/targetAndroidSDK-35-brightgreen)](https://developer.android.com/about/versions/15)
+[![Gradle](https://img.shields.io/badge/gradle-8.11.1-green)](https://docs.gradle.org/8.11.1/release-notes.html)
 [![Maven](https://maven-badges.herokuapp.com/maven-central/com.securevale/rasp-android/badge.svg)](https://search.maven.org/artifact/com.securevale/rasp-android)
 
 An open-source RASP (Runtime Application Self-Protection) solution for protecting Android apps
