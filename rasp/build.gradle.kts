@@ -99,7 +99,7 @@ mavenPublishing {
     version = rootProject.extra["versionName"] as String
     coordinates("com.securevale", "rasp-android", rootProject.extra["versionName"] as String)
 
-    publishToMavenCentral(SonatypeHost.S01, true)
+    publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL, true)
     signAllPublications()
 
     pom {

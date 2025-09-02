@@ -10,8 +10,8 @@ plugins {
     alias(libs.plugins.maven.publish)
 }
 
-val versionCode by extra { 7 }
-val versionName by extra { "0.7.0" }
+val versionCode by extra { 8 }
+val versionName by extra { "0.7.1" }
 val minSdkVersion by extra { 24 }
 val compileSdkVersion by extra { 35 }
 val targetSdkVersion by extra { 35 }
