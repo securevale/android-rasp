@@ -2,7 +2,7 @@ use jni::objects::{JClass, JObject, JString};
 use jni::sys::jboolean;
 use jni::JNIEnv;
 
-use crate::common::system;
+use crate::common::{system, util};
 
 // isRadioVersionSuspicious
 #[no_mangle]
@@ -15,10 +15,13 @@ pub unsafe extern "C" fn Java_com_securevale_rasp_android_emulator_checks_Device
     let radio_version = JObject::try_from(
         env.call_static_method(build_clazz, "getRadioVersion", "()Ljava/lang/String;", &[])
             .unwrap(),
-    )
-    .unwrap();
+    );
 
-    let radio_version_string = &JString::from(radio_version);
+    if radio_version.is_err() {
+        return util::ignore_error_with_default(&mut env, || u8::from(false));
+    }
+
+    let radio_version_string = &JString::from(radio_version.unwrap());
 
     let binding = env.get_string(radio_version_string).unwrap();
 
