@@ -77,12 +77,14 @@ import com.securevale.rasp.android.api.SecureAppChecker
 val shouldCheckForEmulator = true
 val shouldCheckForDebugger = true
 val shouldCheckForRoot = true
+val shouldCheckAppIntegrity = true
 
 val builder = SecureAppChecker.Builder(
   this,
   checkEmulator = shouldCheckForEmulator,
   checkDebugger = shouldCheckForDebugger,
-  checkRoot = shouldCheckForRoot
+  checkRoot = shouldCheckForRoot,
+  checkIntegrity = shouldCheckAppIntegrity
 )
 ```
 
@@ -98,6 +100,7 @@ when (checkResult) {
     is Result.EmulatorFound -> {} // app is most likely running on emulator
     is Result.DebuggerEnabled -> {} // app is in debug mode
     is Result.Rooted -> {} // app is most likely rooted
+    is Result.IntegrityViolation -> {} // app was signed by an untrusted certificate
     is Result.Secure -> {} // OK, no threats detected
 }
 ```
@@ -164,6 +167,30 @@ class documentation.
 > in native code (using Rust language) and distributed with library source code as `.so` library files.
 
 ## Supported Checks
+
+### App Signature / Repackaging Detection
+
+Includes:
+
+- Native verification of the app signing certificate;
+- Detection of apps repackaged and signed with an untrusted certificate;
+- Support for signing certificate rotation on Android 9+.
+
+To configure the trusted certificate, build a signed APK and run:
+
+```bash
+native/update_signature_hash.sh --apk path/to/signed.apk
+cd native && ./build.sh
+```
+
+Multiple `--apk` arguments can be used to configure more than one trusted certificate.
+
+The signature check helps detect applications that were modified and signed again with an
+untrusted certificate. The verification is performed in native code and the trusted certificate
+fingerprint is obfuscated to increase the effort required to locate and bypass the check. However,
+as with other local security checks, a skilled attacker might still be able to patch or hook the
+verification. For this reason, signature verification should be used alongside other RASP checks
+and server-side integrity validation whenever possible.
 
 ### Debugger Detection
 

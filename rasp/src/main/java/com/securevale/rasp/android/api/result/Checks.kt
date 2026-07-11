@@ -6,6 +6,15 @@ package com.securevale.rasp.android.api.result
 interface CheckType
 
 /**
+ * The enum containing application integrity checks.
+ */
+enum class IntegrityChecks : CheckType {
+    IntegrityCheck, AppSignature;
+
+    override fun toString(): String = "Integrity: $name"
+}
+
+/**
  * The enum containing all debugger checks.
  */
 enum class DebuggerChecks : CheckType {
