@@ -4,7 +4,7 @@ set -Eeuo pipefail
 readonly SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 readonly GENERATOR_SOURCE="$SCRIPT_DIR/tools/generate_trusted_signers.rs"
 readonly GENERATOR_BINARY="${TMPDIR:-/tmp}/android-rasp-generate-trusted-signers"
-readonly OUTPUT="$SCRIPT_DIR/src/integrity/trusted_signers.rs"
+readonly OUTPUT="$SCRIPT_DIR/src/integrity/trusted_signers_data.rs"
 
 usage() {
   echo "Usage: $0 --apk <signed.apk> [--apk <signed.apk> ...]"
