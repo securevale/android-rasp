@@ -9,6 +9,7 @@ use jni::JNIEnv;
 
 mod debuggable;
 mod emulator;
+mod integrity;
 
 mod common;
 mod root;

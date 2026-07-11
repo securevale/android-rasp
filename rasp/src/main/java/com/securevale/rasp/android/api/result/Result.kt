@@ -7,6 +7,7 @@ sealed class Result {
     data object EmulatorFound : Result()
     data object DebuggerEnabled : Result()
     data object Rooted : Result()
+    data object IntegrityViolation : Result()
     data object Secure : Result()
 }
 

@@ -30,6 +30,7 @@ class MainActivity : AppCompatActivity() {
         listOf(
             Check("Emulator", TestType.EMULATOR),
             Check("Debugger", TestType.DEBUGGER),
-            Check("Root", TestType.ROOT)
+            Check("Root", TestType.ROOT),
+            Check("App integrity", TestType.INTEGRITY)
         )
 }

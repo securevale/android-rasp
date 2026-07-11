@@ -6,10 +6,12 @@ import com.securevale.rasp.android.api.result.CheckType
 import com.securevale.rasp.android.api.result.DebuggerChecks
 import com.securevale.rasp.android.api.result.EmulatorChecks
 import com.securevale.rasp.android.api.result.ExtendedResult
+import com.securevale.rasp.android.api.result.IntegrityChecks
 import com.securevale.rasp.android.api.result.Result
 import com.securevale.rasp.android.api.result.RootChecks
 import com.securevale.rasp.android.debugger.DebuggerCheck
 import com.securevale.rasp.android.emulator.EmulatorCheck
+import com.securevale.rasp.android.integrity.IntegrityCheck
 import com.securevale.rasp.android.root.RootCheck
 
 /**
@@ -18,13 +20,15 @@ import com.securevale.rasp.android.root.RootCheck
  * @param emulator whether emulator checks should be triggered.
  * @param debugger whether checks for debug should be triggered.
  * @param root whether checks for root should be triggered.
+ * @param integrity whether the app signing certificate should be verified.
  */
 @PublishedApi
 internal class ChecksMediator(
     context: Context,
     emulator: Boolean,
     debugger: Boolean,
-    root: Boolean
+    root: Boolean,
+    integrity: Boolean
 ) {
 
     /**
@@ -42,10 +46,13 @@ internal class ChecksMediator(
      */
     private var rootCheck: RootCheck? = null
 
+    private var integrityCheck: IntegrityCheck? = null
+
     init {
         if (emulator) emulatorCheck = EmulatorCheck(context)
         if (debugger) debugCheck = DebuggerCheck(context)
         if (root) rootCheck = RootCheck(context)
+        if (integrity) integrityCheck = IntegrityCheck(context)
     }
 
     /**
@@ -63,6 +70,7 @@ internal class ChecksMediator(
         emulatorCheck?.check(checkOnlyFor, true, internalSubscriber)
         debugCheck?.check(checkOnlyFor, true, internalSubscriber)
         rootCheck?.check(checkOnlyFor, true, internalSubscriber)
+        integrityCheck?.check(checkOnlyFor, true, internalSubscriber)
     }
 
     /**
@@ -104,6 +112,15 @@ internal class ChecksMediator(
                 root?.vulnerabilityFound() ?: false
             )
         )
+
+        val integrity = integrityCheck?.check(checkOnlyFor)
+        internalSubscriber.onCheck(
+            ExtendedResult(
+                IntegrityChecks.IntegrityCheck,
+                integrity?.vulnerabilityFound() ?: false,
+                integrity?.vulnerabilityFound() ?: false
+            )
+        )
     }
 
     /**
@@ -119,6 +136,9 @@ internal class ChecksMediator(
 
         rootCheck?.check()?.vulnerabilityFound()
             ?: false -> Result.Rooted
+
+        integrityCheck?.check()?.vulnerabilityFound()
+            ?: false -> Result.IntegrityViolation
 
         else -> Result.Secure
     }
